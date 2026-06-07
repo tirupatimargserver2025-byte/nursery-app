@@ -686,7 +686,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 <div class="toast" id="toast"></div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbwHSRA-PKR6cHHgkxh5lK7AvZBOaVb44bXAgd9KaahbK70h-FGQcWb5pZG7vha5vqR8xQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbziWkjGBOrT3C8paZsQ-I42-B0rQ0cc0NuZHX_SUVk8LvUFPdpMWx5iDG7eNqklIuVT0Q/exec';
 const SHEET_ID = '1Nv8FzgMKno4idg7y8OtiQ5QV0OhlsHNTfk9gn4rBVwM';
 
 let SUP_DATA = {}; // {name: {pin, role}}
@@ -1425,10 +1425,11 @@ function loadAttReport(){
   con.innerHTML='<div class="card" style="margin-top:10px;text-align:center;padding:20px;"><div style="font-size:30px;">⏳</div><div style="font-weight:700;">Loading...</div></div>';
 
   // Load Attendance Records
+  const ts=Date.now();
   Promise.all([
-    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Attendance%20Records&t='+Date.now()).then(r=>r.text()),
-    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Labour%20Master&t='+Date.now()).then(r=>r.text()),
-    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Morning%20Assignment&t='+Date.now()).then(r=>r.text())
+    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Attendance%20Records&headers=1&t='+ts).then(r=>r.text()),
+    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Labour%20Master&headers=1&t='+ts).then(r=>r.text()),
+    fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Morning%20Assignment&headers=1&t='+ts).then(r=>r.text())
   ]).then(([attTxt, masterTxt, assignTxt])=>{
     // Parse attendance
     let attRows=[];
@@ -1453,14 +1454,22 @@ function loadAttReport(){
 
     // Filter by date range
     const filtAtt=attRows.filter(r=>{
-      const d=r.c[0]?.v?.toString()||'';
+      if(!r.c||!r.c[0]||!r.c[0].v) return false;
+      // gviz returns Date(yyyy,mm,dd) format - convert to string
+      let d=r.c[0].v.toString();
+      if(d.startsWith('Date(')) {
+        const parts=d.replace('Date(','').replace(')','').split(',');
+        const yr=parts[0]; const mo=String(parseInt(parts[1])+1).padStart(2,'0'); const dy=String(parts[2]).padStart(2,'0');
+        d=yr+'-'+mo+'-'+dy;
+      }
+      r._dateStr=d; // cache
       return d>=from && d<=to;
     });
 
     // Group by date
     const byDate={};
     filtAtt.forEach(r=>{
-      const date=r.c[0]?.v?.toString()||'';
+      const date=r._dateStr||(r.c[0]?.v?.toString()||'');
       const sup=r.c[1]?.v?.toString()||'';
       const labour=r.c[4]?.v?.toString()||'';
       const status=r.c[5]?.v?.toString()||'';
@@ -1478,7 +1487,13 @@ function loadAttReport(){
     // Find assigned but not in attendance
     const assignedByDate={};
     assignRows.forEach(r=>{
-      const date=r.c[0]?.v?.toString()||'';
+      if(!r.c||!r.c[0]||!r.c[0].v) return;
+      let date=r.c[0].v.toString();
+      if(date.startsWith('Date(')){
+        const parts=date.replace('Date(','').replace(')','').split(',');
+        const yr=parts[0]; const mo=String(parseInt(parts[1])+1).padStart(2,'0'); const dy=String(parts[2]).padStart(2,'0');
+        date=yr+'-'+mo+'-'+dy;
+      }
       const labs=(r.c[4]?.v||'').split(',').map(s=>s.trim()).filter(Boolean);
       if(!assignedByDate[date]) assignedByDate[date]=[];
       labs.forEach(l=>{ if(!assignedByDate[date].includes(l)) assignedByDate[date].push(l); });
