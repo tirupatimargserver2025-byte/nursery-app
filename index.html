@@ -459,18 +459,15 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
   <div class="wrap">
     <div class="card">
       <div class="ctitle orange">Basic Jaankari</div>
-      <div class="g2">
-        <div><label>📅 Date</label><input type="date" id="attDate"></div>
-        <div><label>📍 Area</label>
-          <select id="attArea"><option value="">-- Select --</option>
-            <option>Saraswati</option><option>Kedar</option><option>Onkar</option>
-            <option>Godavari</option><option>Brahmputra</option><option>NH</option>
-          </select></div>
+      <div class="fr">
+        <label>📅 Date</label>
+        <input type="date" id="attDate">
       </div>
       <input type="hidden" id="attSup">
+      <input type="hidden" id="attArea" value="">
       <input type="hidden" id="attKaam" value="Daily Attendance">
       <div style="background:var(--gp);border-radius:10px;padding:8px 12px;font-size:13px;font-weight:700;color:var(--gm);">
-        👔 Manager: <span id="attSupShow"></span>
+        👔 Entry by: <span id="attSupShow"></span>
       </div>
     </div>
     <div class="card">
@@ -1068,7 +1065,7 @@ function addAttItem(name, wage) {
     tbody = document.getElementById('attTbody');
   }
   
-  const sid = name.replace(/\s/g,'_');
+  const sid = name.replace(/[^a-zA-Z0-9]/g,'_');
   if(document.getElementById('atr-'+sid)) return;
   
   const tr = document.createElement('tr');
@@ -1077,9 +1074,9 @@ function addAttItem(name, wage) {
   tr.innerHTML = 
     '<td style="font-weight:700;font-size:12px;">'+name+'<br><span style="font-size:10px;color:var(--g5);">₹'+(wage||0)+'/day</span></td>'+
     '<td style="white-space:nowrap;">'+
-      '<button class="st-btn" id="pb-'+sid+'" onclick="setAtt(\''+name+'\',\'present\')" style="margin-right:4px;">✅P</button>'+
-      '<button class="st-btn" id="hb-'+sid+'" onclick="setAtt(\''+name+'\',\'halfday\')" style="margin-right:4px;">🌤H</button>'+
-      '<button class="st-btn" id="ab-'+sid+'" onclick="setAtt(\''+name+'\',\'absent\')">❌A</button>'+
+      '<button class="st-btn" id="pb-'+sid+'" onclick="setAttBySid(\''+sid+'\',\'present\')" style="margin-right:4px;">✅P</button>'+
+      '<button class="st-btn" id="hb-'+sid+'" onclick="setAttBySid(\''+sid+'\',\'halfday\')" style="margin-right:4px;">🌤H</button>'+
+      '<button class="st-btn" id="ab-'+sid+'" onclick="setAttBySid(\''+sid+'\',\'absent\')">❌A</button>'+
     '</td>'+
     '<td><input type="number" id="aw-'+sid+'" value="'+(wage||0)+'" min="0" style="width:55px;" oninput="updAttSum()"></td>'+
     '<td><input type="number" id="aot-'+sid+'" value="0" min="0" step="0.5" style="width:55px;" oninput="updAttSum()"></td>'+
@@ -1127,33 +1124,47 @@ function addCustomLabour(){
     }).catch(()=>toast('⚠️ Sheet mein save nahi hua','error'));
 }
 
-function setAtt(name, status){
-  const sid=name.replace(/\s/g,'_');
+function setAttBySid(sid, status){
+  // Find name from tr data-name attribute
   const tr=document.getElementById('atr-'+sid);
-  const pb=document.getElementById('pb-'+sid);
-  const hb=document.getElementById('hb-'+sid);
-  const ab=document.getElementById('ab-'+sid);
-  const wageEl=document.getElementById('aw-'+sid);
-  
-  // Reset buttons
-  if(pb) pb.className='st-btn';
-  if(hb) hb.className='st-btn';
-  if(ab) ab.className='st-btn';
-  if(tr) tr.className='';
+  if(!tr) return;
+  const name=tr.getAttribute('data-name')||sid.replace(/_/g,' ');
+  setAtt(name, status);
+}
 
-  const fullWage = LABOUR_LIST.find(l=>l.name===name)?.wage || parseFloat(wageEl?.value)||0;
+function setAtt(name, status){
+  // Clean name for ID
+  const sid = name.replace(/[^a-zA-Z0-9]/g,'_');
+  const tr  = document.getElementById('atr-'+sid);
+  const pb  = document.getElementById('pb-'+sid);
+  const hb  = document.getElementById('hb-'+sid);
+  const ab  = document.getElementById('ab-'+sid);
+  const wageEl = document.getElementById('aw-'+sid);
+
+  if(!tr){ console.log('TR not found for:', name, sid); return; }
+
+  // Reset all buttons
+  [pb,hb,ab].forEach(b=>{ if(b) b.className='st-btn'; });
+  tr.className='';
+  tr.removeAttribute('data-status');
+
+  // Get full wage from LABOUR_LIST
+  const labObj = LABOUR_LIST.find(l=>l.name===name);
+  const fullWage = labObj ? parseFloat(labObj.wage)||0 : parseFloat(wageEl?.value)||0;
 
   if(status==='present'){
-    if(tr) tr.className='row-present';
+    tr.className='row-present';
+    tr.setAttribute('data-status','present');
     if(pb) pb.className='st-btn sp';
     if(wageEl) wageEl.value=fullWage;
   } else if(status==='halfday'){
-    if(tr) tr.className='row-half';
+    tr.className='row-half';
+    tr.setAttribute('data-status','halfday');
     if(hb) hb.className='st-btn sh';
-    // Half day = half wage
-    if(wageEl) wageEl.value=(fullWage/2).toFixed(0);
+    if(wageEl) wageEl.value=Math.round(fullWage/2);
   } else {
-    if(tr) tr.className='row-absent';
+    tr.className='row-absent';
+    tr.setAttribute('data-status','absent');
     if(ab) ab.className='st-btn sa';
     if(wageEl) wageEl.value=0;
   }
@@ -1164,19 +1175,18 @@ function updAttSum(){
   let p=0,h=0,a=0,wage=0,otH=0,otW=0;
   document.querySelectorAll('[id^="atr-"]').forEach(tr=>{
     const sid=tr.id.replace('atr-','');
-    if(tr.classList.contains('row-present')){p++;}
-    else if(tr.classList.contains('row-half')){h++;}
-    else if(tr.classList.contains('row-absent')){a++;return;}
+    const st=tr.getAttribute('data-status')||'';
+    if(st==='present') p++;
+    else if(st==='halfday') h++;
+    else if(st==='absent'){a++;return;}
     else return;
     wage+=parseFloat(document.getElementById('aw-'+sid)?.value)||0;
     otH+=parseFloat(document.getElementById('aot-'+sid)?.value)||0;
     otW+=parseFloat(document.getElementById('aow-'+sid)?.value)||0;
   });
-  // Update header summary
   const pEl=document.getElementById('attSmP'); if(pEl) pEl.textContent=p+' Full + '+h+' Half';
   const aEl=document.getElementById('attSmA'); if(aEl) aEl.textContent=a;
   const hEl=document.getElementById('attSmH'); if(hEl) hEl.textContent='₹'+(wage+otW);
-  // Update table footer
   const p2=document.getElementById('attSmP2'); if(p2) p2.textContent=p+'P '+h+'H';
   const a2=document.getElementById('attSmA2'); if(a2) a2.textContent=a+'A';
   const tw=document.getElementById('attTotalWage'); if(tw) tw.textContent='₹'+wage;
@@ -1186,11 +1196,11 @@ function updAttSum(){
 
 function submitAttend(){
   const date=document.getElementById('attDate').value;
-  const supervisor=document.getElementById('attSup').value;
-  const area=document.getElementById('attArea').value;
-  const kaam=document.getElementById('attKaam').value;
-  const rem=document.getElementById('attRem').value;
-  if(!date||!supervisor||!area){toast('❗ Date, Supervisor aur Area zaroori hai!','error');return;}
+  const supervisor=document.getElementById('attSup').value||curUser.name;
+  const area=document.getElementById('attArea')?.value||'';
+  const kaam='Daily Attendance';
+  const rem=document.getElementById('attRem')?.value||'';
+  if(!date){toast('❗ Date zaroori hai!','error');return;}
 
   const labours=[];
   document.querySelectorAll('[id^="atr-"]').forEach(tr=>{
@@ -1201,10 +1211,11 @@ function submitAttend(){
     // Get name from data attribute
     const name=tr.getAttribute('data-name')||firstCell.textContent.split('₹')[0].replace('👤','').trim();
     if(!name) return;
+    const ds=tr.getAttribute('data-status')||'';
     let status='';
-    if(tr.classList.contains('row-present')) status='Present';
-    else if(tr.classList.contains('row-half')) status='Half Day';
-    else if(tr.classList.contains('row-absent')) status='Absent';
+    if(ds==='present') status='Present';
+    else if(ds==='halfday') status='Half Day';
+    else if(ds==='absent') status='Absent';
     if(!status) return;
     const wage=parseFloat(document.getElementById('aw-'+sid)?.value)||0;
     const otHours=parseFloat(document.getElementById('aot-'+sid)?.value)||0;
