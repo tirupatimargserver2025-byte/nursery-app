@@ -358,6 +358,14 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div class="ico">📊</div><div class="ttl">Meri Report</div>
           <div class="dsc">Meri saari entries — date filter</div>
         </div>
+        <div class="mcard report" onclick="openShiftingReport()">
+          <div class="ico">🔄</div><div class="ttl">Shifting Report</div>
+          <div class="dsc">Meri shifting records</div>
+        </div>
+        <div class="mcard report" onclick="openDispatchReport()">
+          <div class="ico">🚚</div><div class="ttl">Dispatch Report</div>
+          <div class="dsc">Meri dispatch records</div>
+        </div>
       </div>
       <div class="msec-title">📊 Kaam Ki Entry</div>
       <div class="mgrid">
@@ -369,7 +377,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div class="ico">💧</div><div class="ttl">Watering & Spraying</div>
           <div class="dsc">Chemical, dose, pump</div>
         </div>
-        <div class="mcard soon"><div class="ico">🪴</div><div class="ttl">Potting</div><div class="dsc">Pot size, qty</div><span class="cbadge">Jald Aayega</span></div>
+        <div class="mcard entry" onclick="openShiftingForm()"><div class="ico">🔄</div><div class="ttl">Shifting</div><div class="dsc">Labour shifting records</div></div>
         <div class="mcard entry" onclick="openDispatchForm()"><div class="ico">🚚</div><div class="ttl">Dispatch</div><div class="dsc">Vehicle dispatch</div></div>
       </div>
     </div>
