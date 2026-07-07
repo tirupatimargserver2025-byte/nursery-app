@@ -872,7 +872,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
       
       <div class="g2">
         <div><label>📍 Area</label>
-          <select id="shArea" onchange="loadShiftingLabour()">
+          <select id="shArea">
             <option value="">-- Select Area --</option>
           </select></div>
         <div><label>🥬 Crop</label>
@@ -892,10 +892,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div class="ctitle" style="font-size:14px;margin-bottom:12px;">👥 Add Labour</div>
         
         <div class="g2">
-          <div><label>Labour</label>
-            <select id="shLabour">
-              <option value="">-- Select Labour --</option>
-            </select></div>
+          <div><label>👤 Labour Naam</label>
+            <input type="text" id="shLabour" placeholder="Naam..." list="labourNames" style="width:100%;"></div>
           <div><label>Tray Count</label>
             <input type="number" id="shTray" placeholder="0" min="0" step="1" style="width:100%;"></div>
         </div>
@@ -2537,7 +2535,9 @@ function openShiftingForm(){
   Object.keys(VDATA).forEach(c => shCrop.innerHTML += '<option value="'+c+'">'+c+'</option>');
   
   document.getElementById('shVariety').innerHTML = '<option value="">-- Variety Chunein --</option>';
-  document.getElementById('shLabour').innerHTML = '<option value="">-- Select Labour --</option>';
+  document.getElementById('shLabour').value = '';
+  document.getElementById('shTray').value = '';
+  buildLabourDatalist(); // ensure labour names ready like Seed Sowing
   shiftingLabours = {};
   updateShiftingLabourList();
   show('shiftingScreen');
@@ -2546,9 +2546,6 @@ function openShiftingForm(){
 document.addEventListener('DOMContentLoaded', () => {
   if(document.getElementById('shCrop')){
     document.getElementById('shCrop').addEventListener('change', loadShiftingVarieties);
-  }
-  if(document.getElementById('shArea')){
-    document.getElementById('shArea').addEventListener('change', loadShiftingLabour);
   }
   if(document.getElementById('dpVariety')){
     document.getElementById('dpVariety').addEventListener('change', validateSowingDate);
@@ -2613,11 +2610,11 @@ function loadShiftingLabour(){
 }
 
 function addShiftingLabour(){
-  const labour = document.getElementById('shLabour').value;
+  const labour = document.getElementById('shLabour').value.trim();
   const tray = document.getElementById('shTray').value;
   
   if(!labour){
-    toast('❗ Labour select karo!', 'error');
+    toast('❗ Labour naam likho!', 'error');
     return;
   }
   if(!tray || parseInt(tray) < 0){
@@ -2634,6 +2631,7 @@ function addShiftingLabour(){
   document.getElementById('shLabour').value = '';
   document.getElementById('shTray').value = '';
   updateShiftingLabourList();
+  toast('✅ '+labour+' add ho gaya!');
 }
 
 function removeShiftingLabour(labour){
