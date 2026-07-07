@@ -864,11 +864,11 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
       
       <div class="g2">
         <div><label>📍 Area</label>
-          <select id="shArea">
+          <select id="shArea" onchange="loadShiftingLabour()">
             <option value="">-- Select Area --</option>
           </select></div>
         <div><label>🥬 Crop</label>
-          <select id="shCrop">
+          <select id="shCrop" onchange="loadShiftingVarieties()">
             <option value="">-- Select Crop --</option>
           </select></div>
       </div>
@@ -2511,7 +2511,7 @@ let shiftingLabours = {};
 
 function openShiftingForm(){
   document.getElementById('shDate').valueAsDate = new Date();
-  document.getElementById('shSup').value = 'Supervisor Name';
+  document.getElementById('shSup').value = curUser ? curUser.name : 'Supervisor';
   
   const areaSelect = document.getElementById('shArea');
   areaSelect.innerHTML = '<option value="">-- Select Area --</option>';
@@ -2523,8 +2523,12 @@ function openShiftingForm(){
     areaSelect.appendChild(opt);
   });
   
-  document.getElementById('shCrop').innerHTML = '<option value="">-- Select Crop --</option>';
-  document.getElementById('shVariety').innerHTML = '<option value="">-- Select Variety --</option>';
+  // Crop from VDATA - exactly like Seed Sowing
+  const shCrop = document.getElementById('shCrop');
+  shCrop.innerHTML = '<option value="">-- Crop Chunein --</option>';
+  Object.keys(VDATA).forEach(c => shCrop.innerHTML += '<option value="'+c+'">'+c+'</option>');
+  
+  document.getElementById('shVariety').innerHTML = '<option value="">-- Variety Chunein --</option>';
   document.getElementById('shLabour').innerHTML = '<option value="">-- Select Labour --</option>';
   shiftingLabours = {};
   updateShiftingLabourList();
@@ -2532,14 +2536,11 @@ function openShiftingForm(){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  if(document.getElementById('shArea')){
-    document.getElementById('shArea').addEventListener('change', loadShiftingVarieties);
-  }
   if(document.getElementById('shCrop')){
     document.getElementById('shCrop').addEventListener('change', loadShiftingVarieties);
   }
-  if(document.getElementById('dpCrop')){
-    document.getElementById('dpCrop').addEventListener('change', loadDispatchVarieties);
+  if(document.getElementById('shArea')){
+    document.getElementById('shArea').addEventListener('change', loadShiftingLabour);
   }
   if(document.getElementById('dpVariety')){
     document.getElementById('dpVariety').addEventListener('change', validateSowingDate);
@@ -2551,28 +2552,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadShiftingVarieties(){
   const crop = document.getElementById('shCrop').value;
-  const varitySelect = document.getElementById('shVariety');
-  varitySelect.innerHTML = '<option value="">-- Select Variety --</option>';
-  
-  if(!crop) return;
-  
-  fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Variety%20Master&headers=1&t='+Date.now())
-    .then(r=>r.text())
-    .then(txt=>{
-      try{
-        const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-        const rows = json.table.rows.filter(r => r.c && r.c[1] && r.c[1].v && r.c[1].v.toString() === crop);
-        const varieties = [...new Set(rows.map(r => (r.c[2]?.v||'').toString()))];
-        varieties.forEach(v => {
-          if(v){
-            const opt = document.createElement('option');
-            opt.value = v;
-            opt.textContent = v;
-            varitySelect.appendChild(opt);
-          }
-        });
-      }catch(e){}
-    }).catch(()=>{});
+  const sel = document.getElementById('shVariety');
+  sel.innerHTML = '<option value="">-- Variety Chunein --</option>';
+  // Exactly like Seed Sowing: use VDATA
+  if(crop && VDATA[crop]){
+    VDATA[crop].forEach(v => sel.innerHTML += '<option>'+v+'</option>');
+  }
 }
 
 function loadShiftingLabour(){
@@ -2868,19 +2853,12 @@ function openDispatchForm(){
     areaSelect.appendChild(opt);
   });
   
-  // Add Crop options
+  // Add Crop options - EXACTLY like Seed Sowing, only from VDATA (sheet data)
   const cropSelect = document.getElementById('dpCrop');
-  cropSelect.innerHTML = '<option value="">-- Select Crop --</option>';
-  const crops = Object.keys(VDATA || {});
-  if(crops.length === 0) crops.push('Vegetable', 'Herbs', 'Spices', 'Flowers');
-  crops.forEach(c => {
-    const opt = document.createElement('option');
-    opt.value = c;
-    opt.textContent = c;
-    cropSelect.appendChild(opt);
-  });
+  cropSelect.innerHTML = '<option value="">-- Crop Chunein --</option>';
+  Object.keys(VDATA).forEach(c => cropSelect.innerHTML += '<option value="'+c+'">'+c+'</option>');
   
-  document.getElementById('dpVariety').innerHTML = '<option value="">-- Select Variety --</option>';
+  document.getElementById('dpVariety').innerHTML = '<option value="">-- Variety Chunein --</option>';
   document.getElementById('dpRemarks').value = '';
   document.getElementById('dpGaadi').value = '';
   document.getElementById('dpDriver').value = '';
@@ -2897,47 +2875,12 @@ function openDispatchForm(){
 
 function loadDispatchVarieties(){
   const crop = document.getElementById('dpCrop').value;
-  const varitySelect = document.getElementById('dpVariety');
-  varitySelect.innerHTML = '<option value="">-- Select Variety --</option>';
-  
-  if(!crop) return;
-  
-  // Add hardcoded varieties as fallback
-  const varieties = {
-    'Vegetable': ['Tomato', 'Onion', 'Chilli', 'Cabbage', 'Carrot'],
-    'Herbs': ['Basil', 'Mint', 'Coriander', 'Parsley'],
-    'Spices': ['Turmeric', 'Ginger', 'Garlic'],
-    'Flowers': ['Marigold', 'Rose', 'Sunflower']
-  };
-  
-  if(varieties[crop]) {
-    varieties[crop].forEach(v => {
-      const opt = document.createElement('option');
-      opt.value = v;
-      opt.textContent = v;
-      varitySelect.appendChild(opt);
-    });
-    return;
+  const sel = document.getElementById('dpVariety');
+  sel.innerHTML = '<option value="">-- Variety Chunein --</option>';
+  // Exactly like Seed Sowing: use VDATA which is already loaded from the sheet
+  if(crop && VDATA[crop]){
+    VDATA[crop].forEach(v => sel.innerHTML += '<option>'+v+'</option>');
   }
-  
-  fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Variety%20Master&headers=1&t='+Date.now())
-    .then(r=>r.text())
-    .then(txt=>{
-      try{
-        const json = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
-        const rows = json.table.rows.filter(r => r.c && r.c[1] && r.c[1].v && r.c[1].v.toString() === crop);
-        const varieties = [...new Set(rows.map(r => (r.c[2]?.v||'').toString()))];
-        varieties.forEach(v => {
-          if(v){
-            const opt = document.createElement('option');
-            opt.value = v;
-            opt.textContent = v;
-            varitySelect.appendChild(opt);
-          }
-        });
-        validateSowingDate();
-      }catch(e){}
-    }).catch(()=>{});
 }
 
 function validateSowingDate(){
