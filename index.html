@@ -1084,6 +1084,11 @@ window.onload = () => {
   });
   const now = t.toTimeString().slice(0,5);
   if(document.getElementById('wST')) document.getElementById('wST').value=now;
+  
+  // Set crop change listener for Dispatch
+  const dpCrop = document.getElementById('dpCrop');
+  if(dpCrop) dpCrop.addEventListener('change', loadDispatchVarieties);
+  
   loadAll();
 };
 
@@ -2836,7 +2841,7 @@ let dispatchEntries = [];
 
 function openDispatchForm(){
   document.getElementById('dpDate').valueAsDate = new Date();
-  document.getElementById('dpSup').value = 'Supervisor Name';
+  document.getElementById('dpSup').value = curUser ? curUser.name : 'Supervisor';
   
   const areaSelect = document.getElementById('dpArea');
   areaSelect.innerHTML = '<option value="">-- Select Area --</option>';
@@ -2848,9 +2853,28 @@ function openDispatchForm(){
     areaSelect.appendChild(opt);
   });
   
-  document.getElementById('dpCrop').innerHTML = '<option value="">-- Select Crop --</option>';
+  // Add Crop options
+  const cropSelect = document.getElementById('dpCrop');
+  cropSelect.innerHTML = '<option value="">-- Select Crop --</option>';
+  const crops = Object.keys(VDATA || {});
+  if(crops.length === 0) crops.push('Vegetable', 'Herbs', 'Spices', 'Flowers');
+  crops.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c;
+    opt.textContent = c;
+    cropSelect.appendChild(opt);
+  });
+  
   document.getElementById('dpVariety').innerHTML = '<option value="">-- Select Variety --</option>';
   document.getElementById('dpRemarks').value = '';
+  document.getElementById('dpGaadi').value = '';
+  document.getElementById('dpDriver').value = '';
+  document.getElementById('dpMeter').value = '';
+  document.getElementById('dpFarmer').value = '';
+  document.getElementById('dpCarret').value = '';
+  document.getElementById('dpPPC').value = '';
+  document.getElementById('dpDirect').value = '';
+  
   dispatchEntries = [];
   updateDispatchEntryList();
   show('dispatchScreen');
@@ -2862,6 +2886,24 @@ function loadDispatchVarieties(){
   varitySelect.innerHTML = '<option value="">-- Select Variety --</option>';
   
   if(!crop) return;
+  
+  // Add hardcoded varieties as fallback
+  const varieties = {
+    'Vegetable': ['Tomato', 'Onion', 'Chilli', 'Cabbage', 'Carrot'],
+    'Herbs': ['Basil', 'Mint', 'Coriander', 'Parsley'],
+    'Spices': ['Turmeric', 'Ginger', 'Garlic'],
+    'Flowers': ['Marigold', 'Rose', 'Sunflower']
+  };
+  
+  if(varieties[crop]) {
+    varieties[crop].forEach(v => {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      varitySelect.appendChild(opt);
+    });
+    return;
+  }
   
   fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Variety%20Master&headers=1&t='+Date.now())
     .then(r=>r.text())
