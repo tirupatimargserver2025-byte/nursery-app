@@ -925,18 +925,24 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
     <div class="card">
       <div class="ctitle">🔍 Filters</div>
       <div class="g2">
-        <div><label>📅 From Date</label><input type="date" id="srFrom"></div>
-        <div><label>📅 To Date</label><input type="date" id="srTo"></div>
+        <div><label>📅 From Date</label><input type="date" id="shrFrom"></div>
+        <div><label>📅 To Date</label><input type="date" id="shrTo"></div>
       </div>
       <div class="g2">
         <div><label>📍 Area</label>
-          <select id="srArea">
+          <select id="shrArea">
             <option value="">-- Sab Areas --</option>
           </select></div>
         <div><label>🥬 Crop</label>
-          <select id="srCrop">
+          <select id="shrCrop" onchange="loadShrVariety()">
             <option value="">-- Sab Crops --</option>
           </select></div>
+      </div>
+      <div class="fr">
+        <label>🌱 Variety</label>
+        <select id="shrVariety">
+          <option value="">-- Sab Varieties --</option>
+        </select>
       </div>
       <button onclick="loadShiftingReport()" style="width:100%;padding:11px;background:var(--gm);color:white;border:none;border-radius:var(--rs);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;">🔍 Report Dekho</button>
     </div>
@@ -1062,8 +1068,22 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <select id="drArea">
             <option value="">-- Sab Areas --</option>
           </select></div>
+        <div><label>🥬 Crop</label>
+          <select id="drCrop" onchange="loadDrVariety()">
+            <option value="">-- Sab Crops --</option>
+          </select></div>
+      </div>
+      <div class="g2">
+        <div><label>🌱 Variety</label>
+          <select id="drVariety">
+            <option value="">-- Sab Varieties --</option>
+          </select></div>
         <div><label>🚙 Gaadi No</label>
-          <input type="text" id="drGaadi" placeholder="Filter by vehicle"></div>
+          <input type="text" id="drGaadi" placeholder="Vehicle number"></div>
+      </div>
+      <div class="fr">
+        <label>👨 Driver</label>
+        <input type="text" id="drDriver" placeholder="Driver naam...">
       </div>
       <button onclick="loadDispatchReport()" style="width:100%;padding:11px;background:var(--gm);color:white;border:none;border-radius:var(--rs);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;">🔍 Report Dekho</button>
     </div>
@@ -2723,29 +2743,41 @@ function submitShifting(){
 function openShiftingReport(){
   const from = new Date();
   from.setDate(from.getDate() - 30);
-  document.getElementById('srFrom').valueAsDate = from;
-  document.getElementById('srTo').valueAsDate = new Date();
+  document.getElementById('shrFrom').valueAsDate = from;
+  document.getElementById('shrTo').valueAsDate = new Date();
   
-  const areaSelect = document.getElementById('srArea');
+  const areaSelect = document.getElementById('shrArea');
   areaSelect.innerHTML = '<option value="">-- Sab Areas --</option>';
   const areas = ['Saraswati', 'Kedar', 'Onkar', 'Godavari', 'Brahmputra', 'NH'];
   areas.forEach(a => {
-    const opt = document.createElement('option');
-    opt.value = a;
-    opt.textContent = a;
-    areaSelect.appendChild(opt);
+    areaSelect.innerHTML += '<option value="'+a+'">'+a+'</option>';
   });
   
-  document.getElementById('srCrop').innerHTML = '<option value="">-- Sab Crops --</option>';
+  // Crop from VDATA - like Seed Sowing
+  const cropSelect = document.getElementById('shrCrop');
+  cropSelect.innerHTML = '<option value="">-- Sab Crops --</option>';
+  Object.keys(VDATA).forEach(c => cropSelect.innerHTML += '<option value="'+c+'">'+c+'</option>');
+  
+  document.getElementById('shrVariety').innerHTML = '<option value="">-- Sab Varieties --</option>';
   
   show('shiftingReportScreen');
 }
 
+function loadShrVariety(){
+  const crop = document.getElementById('shrCrop').value;
+  const sel = document.getElementById('shrVariety');
+  sel.innerHTML = '<option value="">-- Sab Varieties --</option>';
+  if(crop && VDATA[crop]){
+    VDATA[crop].forEach(v => sel.innerHTML += '<option value="'+v+'">'+v+'</option>');
+  }
+}
+
 function loadShiftingReport(){
-  const from = document.getElementById('srFrom').value;
-  const to = document.getElementById('srTo').value;
-  const areaFilter = document.getElementById('srArea').value;
-  const cropFilter = document.getElementById('srCrop').value;
+  const from = document.getElementById('shrFrom').value;
+  const to = document.getElementById('shrTo').value;
+  const areaFilter = document.getElementById('shrArea').value;
+  const cropFilter = document.getElementById('shrCrop').value;
+  const varFilter = document.getElementById('shrVariety').value;
   const myName = curUser.name;
   const con = document.getElementById('shiftingReportContent');
   
@@ -2774,6 +2806,7 @@ function loadShiftingReport(){
           if((r.c[1]?.v||'').toString() !== myName) return false;
           if(areaFilter && (r.c[2]?.v||'').toString() !== areaFilter) return false;
           if(cropFilter && (r.c[3]?.v||'').toString() !== cropFilter) return false;
+          if(varFilter && (r.c[4]?.v||'').toString() !== varFilter) return false;
           return true;
         });
         
@@ -3115,20 +3148,38 @@ function openDispatchReport(){
   areaSelect.innerHTML = '<option value="">-- Sab Areas --</option>';
   const areas = ['Saraswati', 'Kedar', 'Onkar', 'Godavari', 'Brahmputra', 'NH'];
   areas.forEach(a => {
-    const opt = document.createElement('option');
-    opt.value = a;
-    opt.textContent = a;
-    areaSelect.appendChild(opt);
+    areaSelect.innerHTML += '<option value="'+a+'">'+a+'</option>';
   });
   
+  // Crop from VDATA - like Seed Sowing
+  const cropSelect = document.getElementById('drCrop');
+  cropSelect.innerHTML = '<option value="">-- Sab Crops --</option>';
+  Object.keys(VDATA).forEach(c => cropSelect.innerHTML += '<option value="'+c+'">'+c+'</option>');
+  
+  document.getElementById('drVariety').innerHTML = '<option value="">-- Sab Varieties --</option>';
+  document.getElementById('drGaadi').value = '';
+  document.getElementById('drDriver').value = '';
+  
   show('dispatchReportScreen');
+}
+
+function loadDrVariety(){
+  const crop = document.getElementById('drCrop').value;
+  const sel = document.getElementById('drVariety');
+  sel.innerHTML = '<option value="">-- Sab Varieties --</option>';
+  if(crop && VDATA[crop]){
+    VDATA[crop].forEach(v => sel.innerHTML += '<option value="'+v+'">'+v+'</option>');
+  }
 }
 
 function loadDispatchReport(){
   const from = document.getElementById('drFrom').value;
   const to = document.getElementById('drTo').value;
   const areaFilter = document.getElementById('drArea').value;
+  const cropFilter = document.getElementById('drCrop').value;
+  const varFilter = document.getElementById('drVariety').value;
   const gadiFilter = document.getElementById('drGaadi').value.trim().toLowerCase();
+  const driverFilter = document.getElementById('drDriver').value.trim().toLowerCase();
   const myName = curUser.name;
   const con = document.getElementById('dispatchReportContent');
   
@@ -3156,8 +3207,12 @@ function loadDispatchReport(){
           if(r._date < from || r._date > to) return false;
           if((r.c[2]?.v||'').toString() !== myName) return false;
           if(areaFilter && (r.c[1]?.v||'').toString() !== areaFilter) return false;
+          if(cropFilter && (r.c[7]?.v||'').toString() !== cropFilter) return false;
+          if(varFilter && (r.c[8]?.v||'').toString() !== varFilter) return false;
           const gaadi = (r.c[3]?.v||'').toString().toLowerCase();
           if(gadiFilter && !gaadi.includes(gadiFilter)) return false;
+          const driver = (r.c[4]?.v||'').toString().toLowerCase();
+          if(driverFilter && !driver.includes(driverFilter)) return false;
           return true;
         });
         
