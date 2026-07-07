@@ -2500,7 +2500,7 @@ let shiftingLabours = {};
 
 function openShiftingForm(){
   document.getElementById('shDate').valueAsDate = new Date();
-  document.getElementById('shSup').value = curUser.name;
+  document.getElementById('shSup').value = 'Supervisor Name';
   
   const areaSelect = document.getElementById('shArea');
   areaSelect.innerHTML = '<option value="">-- Select Area --</option>';
@@ -2517,10 +2517,7 @@ function openShiftingForm(){
   document.getElementById('shLabour').innerHTML = '<option value="">-- Select Labour --</option>';
   shiftingLabours = {};
   updateShiftingLabourList();
-  
-  loadVeggies().then(() => {
-    show('shiftingScreen');
-  });
+  show('shiftingScreen');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -2839,7 +2836,7 @@ let dispatchEntries = [];
 
 function openDispatchForm(){
   document.getElementById('dpDate').valueAsDate = new Date();
-  document.getElementById('dpSup').value = curUser.name;
+  document.getElementById('dpSup').value = 'Supervisor Name';
   
   const areaSelect = document.getElementById('dpArea');
   areaSelect.innerHTML = '<option value="">-- Select Area --</option>';
@@ -2853,12 +2850,10 @@ function openDispatchForm(){
   
   document.getElementById('dpCrop').innerHTML = '<option value="">-- Select Crop --</option>';
   document.getElementById('dpVariety').innerHTML = '<option value="">-- Select Variety --</option>';
+  document.getElementById('dpRemarks').value = '';
   dispatchEntries = [];
   updateDispatchEntryList();
-  
-  loadVeggies().then(() => {
-    show('dispatchScreen');
-  });
+  show('dispatchScreen');
 }
 
 function loadDispatchVarieties(){
