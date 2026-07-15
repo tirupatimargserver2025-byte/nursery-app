@@ -4431,7 +4431,8 @@ function openAddPay(bid){
   const isFirstPayment = (firstPay === 0);
   
   // Title change करो
-  const titleEl = document.querySelector('#addPayModal .g2:first-child div:first-child');
+  // Set title directly
+  const titleEl = document.querySelector('#addPayModal > div > div:first-child');
   if(titleEl) titleEl.innerHTML = (isFirstPayment ? '💰 First Payment जोड़ो' : '💰 Second Payment जोड़ो');
   
   document.getElementById('apInfo').innerHTML = '<b>'+(first.c[1]?.v||'')+'</b> — '+bid
