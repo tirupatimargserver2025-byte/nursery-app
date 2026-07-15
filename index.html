@@ -4417,9 +4417,13 @@ function submitAddVariety(){
 // ── Add Payment modal ──
 let apCurrentId = '';
 function openAddPay(bid){
-  apCurrentId = bid;
-  const g = pdBookings[bid];
-  const first = g[0];
+  try {
+    console.log('Opening Payment for:', bid);
+    apCurrentId = bid;
+    const g = pdBookings[bid];
+    if(!g){ console.error('pdBookings['+bid+'] not found'); toast('❗ Booking data nahi mila!', 'error'); return; }
+    const first = g[0];
+    if(!first){ console.error('First row not found'); toast('❗ Booking details nahi mila!', 'error'); return; }
   const firstPay = parseFloat(first.c[10]?.v)||0;
   const secondPay = parseFloat(first.c[14]?.v)||0;
   
@@ -4453,6 +4457,10 @@ function openAddPay(bid){
   document.getElementById('apAmount').parentElement.style.display = 'block';
   document.getElementById('apDate').valueAsDate = new Date();
   document.getElementById('addPayModal').style.display = 'flex';
+  } catch(e) {
+    console.error('Error opening payment modal:', e);
+    toast('❗ Error: '+e.message, 'error');
+  }
 }
 function closeAddPay(){ document.getElementById('addPayModal').style.display = 'none'; }
 function apToggleBank(){
