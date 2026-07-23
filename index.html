@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>🌱 Nursery Management App</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -335,6 +338,33 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
   background: white;
 }
 
+/* ══ BOSS DASHBOARD ══ */
+.dash-card{background:white;border-radius:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);overflow:hidden;border:1px solid var(--g2);}
+.dash-head{display:flex;align-items:center;gap:12px;padding:16px;cursor:pointer;user-select:none;transition:background 0.15s;min-height:44px;}
+.dash-head:hover{background:var(--gp);}
+.dash-head .di{font-size:26px;flex-shrink:0;}
+.dash-head .dt{flex:1;font-weight:800;font-size:16px;color:var(--gd);}
+.dash-head .dtot{background:var(--gd);color:white;font-weight:800;font-size:13px;padding:5px 12px;border-radius:20px;white-space:nowrap;}
+.dash-head .darrow{font-size:16px;color:var(--gm);font-weight:800;transition:transform 0.2s;flex-shrink:0;}
+.dash-card.open .darrow{transform:rotate(90deg);}
+.dash-body{display:none;padding:0 12px 14px;border-top:1px solid var(--g2);}
+.dash-card.open .dash-body{display:block;}
+.dash-stat{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+.dash-stat .dsi{flex:1;min-width:80px;background:var(--gp);border-radius:10px;padding:10px;text-align:center;}
+.dash-stat .dsi .dsv{font-size:20px;font-weight:800;color:var(--gd);display:block;}
+.dash-stat .dsi .dsl{font-size:11px;color:var(--g5);font-weight:600;margin-top:2px;}
+.dash-tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.dash-tbl thead tr{background:var(--gd);color:white;}
+.dash-tbl th{padding:9px 8px;text-align:left;font-weight:700;font-size:12px;}
+.dash-tbl td{padding:9px 8px;border-bottom:1px solid var(--g2);}
+.dash-tbl tbody tr:nth-child(even){background:var(--gp);}
+.dash-tbl tbody tr.dtot-row{background:var(--gd)!important;color:white;font-weight:800;}
+.dash-tbl tbody tr.dtot-row td{border:none;}
+.dash-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.dash-sub{font-size:12px;color:var(--g5);margin:8px 0 4px;font-weight:600;}
+.dash-empty{text-align:center;color:var(--g5);padding:16px;font-size:13px;}
+.dash-hidden{display:none!important;}
+
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -377,6 +407,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 
     <!-- Supervisor Menu -->
     <div id="supMenu">
+      <div class="msec-title">📊 Meri Dashboard</div>
+      <div class="mgrid">
+        <div class="mcard report" onclick="openDashboard()" style="grid-column:1/-1;background:linear-gradient(135deg,var(--gd),var(--gm));color:white;">
+          <div class="ico">📊</div><div class="ttl" style="color:white;">Meri Sari Report</div>
+          <div class="dsc" style="color:rgba(255,255,255,0.85);">Ek hi jagah — mera poora kaam</div>
+        </div>
+      </div>
       <div class="msec-title">🌅 Subah Ka Kaam</div>
       <div class="mgrid">
         <div class="mcard assign" onclick="openMod('assign')">
@@ -421,6 +458,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 
     <!-- Manager Menu -->
     <div id="mgrMenu" style="display:none;">
+      <div class="msec-title">📊 Boss Dashboard</div>
+      <div class="mgrid">
+        <div class="mcard report" onclick="openDashboard()" style="grid-column:1/-1;background:linear-gradient(135deg,var(--gd),var(--gm));color:white;">
+          <div class="ico">📊</div><div class="ttl" style="color:white;">Poora Dashboard Kholo</div>
+          <div class="dsc" style="color:rgba(255,255,255,0.85);">Sari report ek hi jagah — tabs me jaaye bina</div>
+        </div>
+      </div>
       <div class="msec-title">🔄 Kaam Ki Entry</div>
       <div class="mgrid">
         <div class="mcard attend" onclick="openMod('attend')">
@@ -475,6 +519,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 
     <!-- Admin Menu -->
     <div id="adminMenu" style="display:none;">
+      <div class="msec-title">📊 Boss Dashboard</div>
+      <div class="mgrid">
+        <div class="mcard report" onclick="openDashboard()" style="grid-column:1/-1;background:linear-gradient(135deg,var(--gd),var(--gm));color:white;">
+          <div class="ico">📊</div><div class="ttl" style="color:white;">Poora Dashboard Kholo</div>
+          <div class="dsc" style="color:rgba(255,255,255,0.85);">Sari report ek hi jagah — tabs me jaaye bina</div>
+        </div>
+      </div>
       <div class="msec-title">📊 Reports</div>
       <div class="mgrid">
         <div class="mcard report" onclick="openMod('report')">
@@ -537,6 +588,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 
     <!-- Marketing Menu -->
     <div id="marketingMenu" style="display:none;">
+      <div class="msec-title">📊 Boss Dashboard</div>
+      <div class="mgrid">
+        <div class="mcard report" onclick="openDashboard()" style="grid-column:1/-1;background:linear-gradient(135deg,var(--gd),var(--gm));color:white;">
+          <div class="ico">📊</div><div class="ttl" style="color:white;">Poora Dashboard Kholo</div>
+          <div class="dsc" style="color:rgba(255,255,255,0.85);">Sari report ek hi jagah — tabs me jaaye bina</div>
+        </div>
+      </div>
       <div class="msec-title">📝 Booking</div>
       <div class="mgrid">
         <div class="mcard entry" onclick="openBookingForm()">
@@ -745,18 +803,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div><label>📅 Date</label><input type="date" id="wDate"></div>
         <div><label>👷 Supervisor</label><select id="wSup"><option value="">-- Select --</option></select></div>
       </div>
-      <div class="g2">
-        <div><label>📍 Area</label>
-          <select id="wArea"><option value="">-- Select --</option>
-            <option>Saraswati</option><option>Kedar</option><option>Onkar</option>
-            <option>Godavari</option><option>Brahmputra</option><option>NH</option>
-          </select></div>
-        <div><label>⏰ Shift</label>
-          <select id="wShift"><option>Subah (6am-2pm)</option><option>Dopahar (2pm-10pm)</option><option>Full Day</option></select></div>
-      </div>
-      <div class="g2">
-        <div><label>🕐 Start Time</label><input type="time" id="wST"></div>
-        <div><label>🕐 End Time</label><input type="time" id="wET"></div>
+      <div class="fr">
+        <label>📍 Area</label>
+        <select id="wArea"><option value="">-- Select --</option>
+          <option>Saraswati</option><option>Kedar</option><option>Onkar</option>
+          <option>Godavari</option><option>Brahmputra</option><option>NH</option>
+        </select>
       </div>
     </div>
     <div class="card">
@@ -767,38 +819,19 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
       </div>
       <input type="hidden" id="wKT" value="water">
       <div class="watsec" id="watSec">
-        <span class="ipill">💧 Seedhi paani se sijaai</span>
-        <div class="g2">
-          <div><label>🚿 Method</label>
-            <select id="wMeth"><option>Haath se (pipe)</option><option>Drip Irrigation</option><option>Sprinkler</option><option>Watering Can</option><option>Other</option></select></div>
-          <div><label>💦 Pani (litre)</label><input type="number" id="wLitre" placeholder="0" min="0" oninput="updWS()"></div>
-        </div>
-        <div class="fr"><label>🌱 Kaunsi Plants</label><input type="text" id="wPlants" placeholder="e.g. Mirchi, Bengan"></div>
+        <span class="ipill">💧 Watering — niche sirf Labour ke naam bharein</span>
       </div>
       <div class="wsec" id="spraySec">
         <span class="ipill">🌿 Spray / Drenching</span>
-        <label style="font-weight:700;color:var(--gd);display:block;margin-bottom:6px;">📍 Kahan Kiya?</label>
         <label style="display:flex;align-items:center;gap:8px;padding:10px;border:2px solid var(--g2);border-radius:8px;margin-bottom:10px;cursor:pointer;font-weight:600;background:var(--gp);">
           <input type="checkbox" id="spAllArea" onchange="toggleAllArea()" style="width:18px;height:18px;">
-          📍 Poora Area me kiya (sabhi crop/variety)
+          📍 Poora Area me kiya (crop/variety nahi chunni)
         </label>
-        <div id="spTargetWrap">
-          <div class="ctitle" style="margin-top:2px;">🌱 Kaunse Crop/Variety me</div>
-          <div id="tgtCon"></div>
-          <button type="button" class="abtn ac" onclick="addTgt()">➕ Aur Crop/Variety Add Karo</button>
+        <div id="spLineWrap">
+          <div class="ctitle" style="margin-top:2px;">📒 Register Entry — har line: paudha, variety, dawai, matra</div>
+          <div id="spLineCon"></div>
+          <button type="button" class="abtn ac" onclick="addSprayLine()">➕ Aur Line Add Karo</button>
         </div>
-        <div class="g2">
-          <div><label>🔫 Sprayer</label>
-            <select id="spType"><option>Haath wala pump</option><option>Power sprayer</option><option>Dono</option></select></div>
-          <div><label>🔢 Pump Count</label><input type="number" id="pCnt" placeholder="0" min="0" oninput="updWS()"></div>
-        </div>
-        <div class="g2">
-          <div><label>💧 Pani/Pump (L)</label><input type="number" id="wPP" placeholder="16" min="0" oninput="updWS()"></div>
-          <div><label>🌱 Area Covered</label><input type="text" id="aCov" placeholder="Zone A, GH-1"></div>
-        </div>
-        <div class="ctitle" style="margin-top:4px;">🧪 Chemicals</div>
-        <div id="cCon"></div>
-        <button class="abtn ac" onclick="addC()">➕ Chemical Add Karo</button>
       </div>
     </div>
     <div class="card"><div class="ctitle blue">👷 Labour Details</div>
@@ -808,13 +841,36 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
       <div class="sumtitle">📊 Live Summary</div>
       <div class="sg3">
         <div class="si"><span class="val" id="wsmL">0</span><div class="lbl">Labour</div></div>
-        <div class="si"><span class="val" id="wsmPu">—</span><div class="lbl">Pumps</div></div>
-        <div class="si"><span class="val" id="wsmW">0L</span><div class="lbl">Pani</div></div>
+        <div class="si"><span class="val" id="wsmPu">0</span><div class="lbl">Total Pumps</div></div>
       </div>
     </div>
     <div class="card" style="margin-top:10px;"><div class="ctitle blue">📝 Remarks</div>
       <textarea id="wRem" rows="2" placeholder="Koi khaas baat..."></textarea></div>
     <button class="subbtn" id="wSub" onclick="submitWater()" style="background:linear-gradient(135deg,var(--bl),var(--bm));">✅ Entry Save Karo</button>
+  </div>
+</div>
+
+<!-- ════ BOSS DASHBOARD ════ -->
+<div class="screen" id="dashScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:var(--pu);">📊</div>
+      <h1>Dashboard <span>Sari Report Ek Jagah</span></h1></div>
+    <div class="sbar">
+      <button class="backbtn" onclick="goMenu()">← Menu</button>
+      <div class="dbadge" id="dashSupB"></div></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle">📅 Date Filter</div>
+      <div class="g2">
+        <div><label>From Date</label><input type="date" id="dashFrom"></div>
+        <div><label>To Date</label><input type="date" id="dashTo"></div>
+      </div>
+      <div style="margin-top:8px;"><label>🔍 Search (kisi bhi report me)</label>
+        <input type="text" id="dashSearch" placeholder="Farmer, village, crop, labour..." oninput="dashFilterSearch()" style="width:100%;padding:10px;border:1px solid var(--g2);border-radius:8px;font-size:14px;"></div>
+      <button onclick="loadDashboard()" style="width:100%;padding:12px;background:var(--gm);color:white;border:none;border-radius:var(--rs);font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;">🔄 Dashboard Load Karo</button>
+    </div>
+    <div id="dashContent"></div>
   </div>
 </div>
 
@@ -1206,13 +1262,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div><label>🏦 Bank 1</label>
             <select id="bkBankName" style="width:100%;">
               <option value="">-- Bank Chunein --</option>
+              <option value="ICICI-01">ICICI-01</option>
+              <option value="ICICI-02">ICICI-02</option>
               <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+              <option value="ICICI-4651">ICICI-4651</option>
+              <option value="PHONE PAY-41">PHONE PAY-41</option>
+              <option value="PHONE PAY-52">PHONE PAY-52</option>
+              <option value="Other">Other</option>
             </select></div>
           <div><label>💵 Bank 1 Amount</label><input type="number" id="bkBankAmt1" placeholder="0" min="0"></div>
         </div>
@@ -1220,13 +1276,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div><label>🏦 Bank 2 (optional)</label>
             <select id="bkBankName2" style="width:100%;">
               <option value="">-- Bank --</option>
+              <option value="ICICI-01">ICICI-01</option>
+              <option value="ICICI-02">ICICI-02</option>
               <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+              <option value="ICICI-4651">ICICI-4651</option>
+              <option value="PHONE PAY-41">PHONE PAY-41</option>
+              <option value="PHONE PAY-52">PHONE PAY-52</option>
+              <option value="Other">Other</option>
             </select></div>
           <div><label>💵 Bank 2 Amount</label><input type="number" id="bkBankAmt2" placeholder="0" min="0"></div>
         </div>
@@ -1237,13 +1293,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div><label>🏦 Bank 1</label>
             <select id="bkBank1Name" style="width:100%;">
               <option value="">-- Bank --</option>
+              <option value="ICICI-01">ICICI-01</option>
+              <option value="ICICI-02">ICICI-02</option>
               <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+              <option value="ICICI-4651">ICICI-4651</option>
+              <option value="PHONE PAY-41">PHONE PAY-41</option>
+              <option value="PHONE PAY-52">PHONE PAY-52</option>
+              <option value="Other">Other</option>
             </select></div>
           <div><label>💵 Bank 1 Amount</label><input type="number" id="bkBank1Amt" placeholder="0" min="0"></div>
         </div>
@@ -1251,13 +1307,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div><label>🏦 Bank 2 (optional)</label>
             <select id="bkBank2Name" style="width:100%;">
               <option value="">-- Bank --</option>
+              <option value="ICICI-01">ICICI-01</option>
+              <option value="ICICI-02">ICICI-02</option>
               <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+              <option value="ICICI-4651">ICICI-4651</option>
+              <option value="PHONE PAY-41">PHONE PAY-41</option>
+              <option value="PHONE PAY-52">PHONE PAY-52</option>
+              <option value="Other">Other</option>
             </select></div>
           <div><label>💵 Bank 2 Amount</label><input type="number" id="bkBank2Amt" placeholder="0" min="0"></div>
         </div>
@@ -1422,13 +1478,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div><label>🏦 Bank 1</label>
           <select id="apBank1Name" style="width:100%;">
             <option value="">-- Bank --</option>
+            <option value="ICICI-01">ICICI-01</option>
+            <option value="ICICI-02">ICICI-02</option>
             <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+            <option value="ICICI-4651">ICICI-4651</option>
+            <option value="PHONE PAY-41">PHONE PAY-41</option>
+            <option value="PHONE PAY-52">PHONE PAY-52</option>
+            <option value="Other">Other</option>
           </select></div>
         <div><label>💵 Bank 1 Amt</label><input type="number" id="apBank1Amt" placeholder="0" min="0"></div>
       </div>
@@ -1436,13 +1492,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div><label>🏦 Bank 2 (optional)</label>
           <select id="apBank2Name" style="width:100%;">
             <option value="">-- Bank --</option>
+            <option value="ICICI-01">ICICI-01</option>
+            <option value="ICICI-02">ICICI-02</option>
             <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+            <option value="ICICI-4651">ICICI-4651</option>
+            <option value="PHONE PAY-41">PHONE PAY-41</option>
+            <option value="PHONE PAY-52">PHONE PAY-52</option>
+            <option value="Other">Other</option>
           </select></div>
         <div><label>💵 Bank 2 Amt</label><input type="number" id="apBank2Amt" placeholder="0" min="0"></div>
       </div>
@@ -1452,13 +1508,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div><label>🏦 Bank 1</label>
           <select id="apBank" style="width:100%;">
             <option value="">-- Bank --</option>
+            <option value="ICICI-01">ICICI-01</option>
+            <option value="ICICI-02">ICICI-02</option>
             <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+            <option value="ICICI-4651">ICICI-4651</option>
+            <option value="PHONE PAY-41">PHONE PAY-41</option>
+            <option value="PHONE PAY-52">PHONE PAY-52</option>
+            <option value="Other">Other</option>
           </select></div>
         <div><label>💵 Bank 1 Amt</label><input type="number" id="apBankOnlyAmt1" placeholder="0" min="0"></div>
       </div>
@@ -1466,13 +1522,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div><label>🏦 Bank 2 (optional)</label>
           <select id="apBankOnly2Name" style="width:100%;">
             <option value="">-- Bank --</option>
+            <option value="ICICI-01">ICICI-01</option>
+            <option value="ICICI-02">ICICI-02</option>
             <option value="ICICI-6684">ICICI-6684</option>
-                <option value="ICICI-4651">ICICI-4651</option>
-                <option value="ICICI-01">ICICI-01</option>
-                <option value="ICICI-02">ICICI-02</option>
-                <option value="PHONE PAY-41">PHONE PAY-41</option>
-                <option value="PHONE PAY-52">PHONE PAY-52</option>
-                <option value="Other">Other</option>
+            <option value="ICICI-4651">ICICI-4651</option>
+            <option value="PHONE PAY-41">PHONE PAY-41</option>
+            <option value="PHONE PAY-52">PHONE PAY-52</option>
+            <option value="Other">Other</option>
           </select></div>
         <div><label>💵 Bank 2 Amt</label><input type="number" id="apBankOnly2Amt" placeholder="0" min="0"></div>
       </div>
@@ -1565,6 +1621,26 @@ function formatDate(dateStr) {
   
   return day + ' ' + month + ' ' + year;
 }
+// ═══ AUTO-UPDATE: naya version aate hi app khud refresh ho jayega ═══
+// Deploy karte waqt ye number badal jata hai -> purana app khud naya version le lega
+const APP_VERSION = '20260723-1158';
+(function autoUpdateCheck(){
+  // Loop guard: abhi abhi update hua hai to dobara check mat karo
+  if(location.search.indexOf('v=') !== -1) return;
+  fetch(location.pathname + '?nocache=' + Date.now(), { cache: 'no-store' })
+    .then(function(r){ return r.text(); })
+    .then(function(t){
+      // Regex string se banaya — warna ye line khud apne hi pattern se match kar leti
+      const re = new RegExp('APP_' + "VERSION = '([^']+)'");
+      const m = t.match(re);
+      if(m && m[1] !== APP_VERSION){
+        // Naya version mila -> fresh URL se load karo (cache bypass)
+        location.replace(location.pathname + '?v=' + m[1]);
+      }
+    })
+    .catch(function(){ /* offline ho to chup rehna */ });
+})();
+
 const API = 'https://script.google.com/macros/s/AKfycbxbe3QLBtIrcl0CXJMkM3zI7m5Pd75vsMaMO4rNRyMqQ0Ux5c_-TE5v6Dk8p2DqEPCVkQ/exec';
 const SHEET_ID = '1Nv8FzgMKno4idg7y8OtiQ5QV0OhlsHNTfk9gn4rBVwM';
 
@@ -1573,7 +1649,7 @@ let LABOUR_LIST = []; // [{name, wage}]
 let VDATA = {};
 let curUser = null; // {name, role}
 let curMod = null;
-let vCnt=0, lCnt={}, cCnt=0, wlCnt=0, akCnt=0;
+let vCnt=0, lCnt={}, wlCnt=0, akCnt=0;
 let akLabours = {}; // {akid: [names]}
 
 // Timezone-safe date: returns YYYY-MM-DD in LOCAL time (fixes India IST shift bug from toISOString)
@@ -1819,6 +1895,8 @@ function openMod(mod) {
     document.getElementById('wSupB').textContent='👷 '+curUser.name;
     if(!document.querySelector('[id^="wlb-"]')){wlCnt=0;addWL();}
     resetSprayTargets();
+    populateCropVarietyLists();
+    loadChemList();
     show('waterScreen');
   } else if(mod==='attReport') {
     document.getElementById('repSupB').textContent=(curUser.role==='Manager'?'👔':'👑')+' '+curUser.name;
@@ -2316,44 +2394,51 @@ function setWT(type){
   document.getElementById('btnS').className='tbtn'+(type==='spray'?' as':'');
   document.getElementById('watSec').className='watsec'+(type==='water'?'':' hide');
   document.getElementById('spraySec').className='wsec'+(type==='spray'?' show':'');
-  if(type==='spray'&&!document.querySelector('[id^="cb-"]')) addC();
+  if(type==='spray'&&!document.querySelector('[id^="spl-"]')) addSprayLine();
+  refreshLabourKaam();
   updWS();
 }
-function addC(){
-  cCnt++; const cid=cCnt;
-  const d=document.createElement('div'); d.className='cblock'; d.id='cb-'+cid;
-  d.innerHTML='<div class="cbh"><div class="cbt"><div class="cn">'+cid+'</div> Chemical '+cid+'</div>'+(cid>1?'<button class="rmbtn" onclick="remC('+cid+')">✕</button>':'')+
-  '</div><div class="cbb"><div class="fr"><label>🧪 Naam</label><input type="text" id="cn-'+cid+'" placeholder="e.g. Imidacloprid, DAP"></div>'+
-  '<div class="g3"><div><label>📏 Dose</label><input type="number" id="cd-'+cid+'" placeholder="0" step="0.1"></div>'+
-  '<div><label>📐 Unit</label><select id="cu-'+cid+'"><option>ml/pump</option><option>gm/pump</option><option>ml/litre</option><option>gm/litre</option><option>ml total</option><option>gm total</option></select></div>'+
-  '<div><label>🎯 Purpose</label><select id="cp-'+cid+'"><option>Pesticide</option><option>Fungicide</option><option>Fertilizer</option><option>Growth Promoter</option><option>Weedicide</option><option>Other</option></select></div></div>'+
-  '<div class="fr"><label>💉 Kya Kiya</label><select id="cwt-'+cid+'" style="width:100%;padding:8px;border:1px solid var(--g2);border-radius:6px;font-weight:600;"><option value="Spray">🌿 Spray (patton par)</option><option value="Drench">💧 Drenching (jad me)</option></select></div></div>';
-  document.getElementById('cCon').appendChild(d);
+
+// Kaam ke type ke hisaab se labour ka Kaam dropdown
+function kaamOptions(){
+  const t = document.getElementById('wKT')?.value || 'water';
+  if(t === 'spray'){
+    return '<option>Spray</option><option>Drenching</option><option>Pump chalana</option><option>Dono</option>';
+  }
+  return '<option>Watering</option><option>Pipe pakadna</option><option>Pump chalana</option><option>Dono</option>';
 }
-function remC(cid){document.getElementById('cb-'+cid).remove();}
+// Kaam type badalne par sabhi labour ke Kaam dropdown refresh karo
+function refreshLabourKaam(){
+  document.querySelectorAll('[id^="wlt-"]').forEach(function(sel){
+    const old = sel.value;
+    sel.innerHTML = kaamOptions();
+    // agar purana option abhi bhi maujood hai to wahi rehne do
+    for(let i=0;i<sel.options.length;i++){
+      if(sel.options[i].value === old){ sel.value = old; break; }
+    }
+  });
+}
 function addWL(){
   wlCnt++; const lid=wlCnt;
   const d=document.createElement('div'); d.className='wlblock'; d.id='wlb-'+lid;
   d.innerHTML='<div class="wlbh"><div class="wlbt"><div class="wln">'+lid+'</div> Labour '+lid+'</div>'+(lid>1?'<button class="rmbtn" onclick="remWL('+lid+')">✕</button>':'')+
   '</div><div class="wlbb"><div class="fr"><label>👤 Naam</label><input type="text" id="wln-'+lid+'" placeholder="Naam..." oninput="updWS()" list="labourNames"></div>'+
-  '<div class="g2"><div><label>⏱️ Ghante</label><input type="number" id="wlh-'+lid+'" placeholder="0" min="0" step="0.5" oninput="updWS()"></div>'+
-  '<div><label>🔧 Kaam</label><select id="wlt-'+lid+'"><option>Watering</option><option>Spraying</option><option>Pump chalana</option><option>Pipe pakadna</option><option>Dono</option></select></div></div>'+
-  '<div class="fr"><label>🪣 Pumps</label><input type="number" id="wlp-'+lid+'" placeholder="0" min="0" oninput="updWS()"></div></div>';
+  '<div class="g2"><div><label>🔧 Kaam</label><select id="wlt-'+lid+'">'+kaamOptions()+'</select></div>'+
+  '<div><label>🪣 Pump Count</label><input type="number" id="wlp-'+lid+'" placeholder="0" min="0" oninput="updWS()"></div></div></div>';
   document.getElementById('wlCon').appendChild(d);
   updWS();
 }
 function remWL(lid){document.getElementById('wlb-'+lid).remove();updWS();}
 function updWS(){
   document.getElementById('wsmL').textContent=document.querySelectorAll('[id^="wlb-"]').length;
-  const type=document.getElementById('wKT').value;
-  if(type==='spray'){const p=parseInt(document.getElementById('pCnt')?.value)||0;const w=parseInt(document.getElementById('wPP')?.value)||0;document.getElementById('wsmPu').textContent=p;document.getElementById('wsmW').textContent=(p*w)+'L';}
-  else{document.getElementById('wsmPu').textContent='—';document.getElementById('wsmW').textContent=(parseInt(document.getElementById('wLitre')?.value)||0)+'L';}
+  let tp=0;
+  document.querySelectorAll('[id^="wlp-"]').forEach(function(el){ tp += parseFloat(el.value)||0; });
+  const pu=document.getElementById('wsmPu'); if(pu) pu.textContent=tp;
 }
 function submitWater(){
   const date=document.getElementById('wDate').value;
   const supervisor=document.getElementById('wSup').value;
   const area=document.getElementById('wArea').value;
-  const shift=document.getElementById('wShift').value;
   const kaamType=document.getElementById('wKT').value;
   const rem=document.getElementById('wRem').value;
   if(!date||!supervisor||!area){toast('❗ Date, Supervisor aur Area zaroori hai!','error');return;}
@@ -2361,17 +2446,24 @@ function submitWater(){
   document.querySelectorAll('[id^="wlb-"]').forEach(el=>{
     const lid=el.id.split('-')[1];
     const nm=document.getElementById('wln-'+lid)?.value||'';
-    if(nm) labs.push({name:nm,hours:document.getElementById('wlh-'+lid)?.value||0,task:document.getElementById('wlt-'+lid)?.value||'',pumps:document.getElementById('wlp-'+lid)?.value||0});
+    if(nm) labs.push({name:nm,hours:0,task:document.getElementById('wlt-'+lid)?.value||'',pumps:document.getElementById('wlp-'+lid)?.value||0});
   });
-  let payload={module:'watering_spraying',date,supervisor,area,shift,kaamType,remarks:rem,labours:labs,startTime:document.getElementById('wST')?.value||'',endTime:document.getElementById('wET')?.value||''};
+  let payload={module:'watering_spraying',date,supervisor,area,shift:'',kaamType,remarks:rem,labours:labs,startTime:'',endTime:''};
   if(kaamType==='spray'){
-    // Target (crop/variety ya poora area) build karo
-    const _target = buildTargetString();
-    if(!_target){toast('❗ Crop chunein ya "Poora Area" select karein','error');return;}
-    const chems=[];
-    document.querySelectorAll('[id^="cb-"]').forEach(el=>{const cid=el.id.split('-')[1];const nm=document.getElementById('cn-'+cid)?.value||'';if(nm) chems.push({name:nm,dose:document.getElementById('cd-'+cid)?.value||0,unit:document.getElementById('cu-'+cid)?.value||'',purpose:document.getElementById('cp-'+cid)?.value||'',workType:document.getElementById('cwt-'+cid)?.value||'Spray'});});
-    payload.crop=_target;payload.variety='';payload.pumpCount=document.getElementById('pCnt')?.value||0;payload.waterPerPump=document.getElementById('wPP')?.value||0;payload.areaCovered=document.getElementById('aCov')?.value||'';payload.sprayerType=document.getElementById('spType')?.value||'';payload.chemicals=chems;
-  } else {payload.waterMethod=document.getElementById('wMeth')?.value||'';payload.waterLitre=document.getElementById('wLitre')?.value||0;payload.waterPlants=document.getElementById('wPlants')?.value||'';}
+    // Register lines collect karo
+    const _lines = buildSprayLines();
+    if(!_lines.length){toast('❗ Kam se kam ek line bharein (dawai + matra)','error');return;}
+    const _allArea = !!document.getElementById('spAllArea')?.checked;
+    const bad = _lines.filter(function(l){ return _allArea ? !l.name : (!l.crop || !l.name); });
+    if(bad.length){toast(_allArea ? '❗ Har line me Dawai bharein' : '❗ Har line me Paudha aur Dawai dono bharein','error');return;}
+    let chems=[];
+    chems = _lines.map(function(l){
+      return {crop:l.crop, variety:l.variety, name:l.name, dose:l.dose, unit:l.unit, workType:l.workType, purpose:''};
+    });
+    // Total pumps sabhi labour se jod do
+    let _tp=0; labs.forEach(function(l){ _tp += parseFloat(l.pumps)||0; });
+    payload.crop=spraySummaryString(_lines);payload.variety='';payload.pumpCount=_tp;payload.waterPerPump=0;payload.areaCovered='';payload.sprayerType='';payload.chemicals=chems;
+  } else {payload.waterMethod='';payload.waterLitre=0;payload.waterPlants='';}
   const btn=document.getElementById('wSub');
   btn.disabled=true; btn.innerHTML='⏳ Save Ho Raha Hai...';
   fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})
@@ -2722,7 +2814,7 @@ function loadMyReport(){
     
     if(!workType || workType==='seed'){let seedRows=parseRows(seedTxt);seedRows.forEach(r=>{r._date=fixDate(r);});const mySeed=seedRows.filter(r=>{if(!r._date||r._date<from||r._date>to) return false;if((r.c[1]?.v||'').toString()!==myName) return false;if(vegFilter && (r.c[4]?.v||'').toString()!==vegFilter) return false;if(areaFilter && (r.c[2]?.v||'').toString()!==areaFilter) return false;if(varFilter && !(r.c[5]?.v||'').toString().toLowerCase().includes(varFilter)) return false;return true;});let sPkt=0,sTrays=0,sPlants=0;const byVeg={};mySeed.forEach(r=>{const veg=(r.c[4]?.v||'').toString();const variety=(r.c[5]?.v||'').toString();const pkt=parseFloat(r.c[7]?.v)||0;const trays=parseFloat(r.c[8]?.v)||0;const plants=parseFloat(r.c[11]?.v)||0;sPkt+=pkt;sTrays+=trays;sPlants+=plants;if(!byVeg[veg]) byVeg[veg]={pkt:0,trays:0,plants:0,varieties:{}};byVeg[veg].pkt+=pkt;byVeg[veg].trays+=trays;byVeg[veg].plants+=plants;if(!byVeg[veg].varieties[variety]) byVeg[veg].varieties[variety]={pkt:0,trays:0,plants:0};byVeg[veg].varieties[variety].pkt+=pkt;byVeg[veg].varieties[variety].trays+=trays;byVeg[veg].varieties[variety].plants+=plants;});html+='<div class="rep-card"><div class="rep-title">🌱 Seed Sowing — '+mySeed.length+' Records</div><div class="rep-sub">'+from+' to '+to+'</div><div class="stat-grid"><div class="stat-item"><span class="sv">'+sPkt.toLocaleString()+'</span><div class="sl">Total PKT</div></div><div class="stat-item"><span class="sv">'+sTrays.toLocaleString()+'</span><div class="sl">Total Trays</div></div><div class="stat-item"><span class="sv">'+sPlants.toLocaleString()+'</span><div class="sl">Total Plants</div></div></div></div>';if(mySeed.length>0){html+='<div class="rep-card"><div class="rep-title">🥬 Vegetable-wise</div><div style="overflow-x:auto;"><table class="att-table"><thead><tr><th>Vegetable</th><th>Variety</th><th>PKT</th><th>Trays</th><th>Plants</th></tr></thead><tbody>';Object.entries(byVeg).forEach(([veg,vdata])=>{html+='<tr style="background:var(--gp);font-weight:700;"><td>'+veg+'</td><td style="color:var(--g5);">'+Object.keys(vdata.varieties).length+' varieties</td><td>'+vdata.pkt+'</td><td>'+vdata.trays+'</td><td>'+vdata.plants.toLocaleString()+'</td></tr>';Object.entries(vdata.varieties).forEach(([vr,vrdata])=>{html+='<tr><td style="color:var(--g5);padding-left:16px;">↳</td><td>'+vr+'</td><td>'+vrdata.pkt+'</td><td>'+vrdata.trays+'</td><td>'+vrdata.plants.toLocaleString()+'</td></tr>';});});html+='<tr style="background:var(--gd);color:white;font-weight:800;"><td colspan="2">TOTAL</td><td>'+sPkt+'</td><td>'+sTrays+'</td><td>'+sPlants.toLocaleString()+'</td></tr>';html+='</tbody></table></div></div>';html+='<div class="rep-card"><div class="rep-title">📋 Seed Sowing Detail <span style="font-size:11px;color:var(--g5);font-weight:600;">— row pe click karo</span></div><div style="overflow-x:auto;"><table class="att-table"><thead><tr><th></th><th>Date</th><th>Area</th><th>Vegetable</th><th>Variety</th><th>Lot</th><th>PKT</th><th>Trays</th><th>Plants</th></tr></thead><tbody>';mySeed.forEach(r=>{const key=r._date+'|'+(r.c[2]?.v||'')+'|'+(r.c[4]?.v||'')+'|'+(r.c[5]?.v||'')+'|'+(r.c[6]?.v||'');const labs=seedLabMap[key]||[];let inner='';if(labs.length>0){inner+='<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">👤 Labour</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">PKT</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Tray</th></tr></thead><tbody>';labs.forEach((l,idx)=>{const bg=idx%2===0?'white':'var(--gp)';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+l.name+'</td><td style="padding:10px;">'+l.pkt+'</td><td style="padding:10px;">'+l.tray+'</td></tr>';});inner+='</tbody></table>';}else{inner='<div style="color:var(--g5);font-size:12px;">Labour breakdown nahi mila.</div>';}const ex=expRow(inner,9);html+='<tr class="exp-toggle" onclick="toggleRow(\''+ex.rid+'\')"><td><span class="exp-arrow">▶</span></td><td>'+formatDate(r._date)+'</td><td>'+(r.c[2]?.v||'')+'</td><td>'+(r.c[4]?.v||'')+'</td><td>'+(r.c[5]?.v||'')+'</td><td>'+(r.c[6]?.v||'')+'</td><td>'+(r.c[7]?.v||0)+'</td><td>'+(r.c[8]?.v||0)+'</td><td>'+(parseFloat(r.c[11]?.v)||0).toLocaleString()+'</td></tr>';html+=ex.row;});html+='<tr style="background:var(--gd);color:white;font-weight:800;"><td colspan="6">TOTAL</td><td>'+sPkt+'</td><td>'+sTrays+'</td><td>'+sPlants.toLocaleString()+'</td></tr>';html+='</tbody></table></div></div>';}else{html+='<div class="rep-card" style="text-align:center;color:var(--g5);padding:16px;">Seed Sowing — koi record nahi mila.</div>';}}
     
-    if(!workType || workType==='water' || workType==='spray'){let watRows=parseRows(watTxt);let sprRows=parseRows(sprTxt);watRows.forEach(r=>{r._date=fixDate(r);});sprRows.forEach(r=>{r._date=fixDate(r);});const myWat=watRows.filter(r=>{if(!r._date||r._date<from||r._date>to) return false;if((r.c[1]?.v||'').toString()!==myName) return false;if(areaFilter && (r.c[2]?.v||'').toString()!==areaFilter) return false;return true;});const mySpr=sprRows.filter(r=>{if(!r._date||r._date<from||r._date>to) return false;if((r.c[1]?.v||'').toString()!==myName) return false;if(areaFilter && (r.c[2]?.v||'').toString()!==areaFilter) return false;return true;});const totalWaterL=myWat.reduce((s,r)=>s+(parseFloat(r.c[7]?.v)||0),0);html+='<div class="rep-card"><div class="rep-title">💧 Watering & Spraying — '+(myWat.length+mySpr.length)+' Records</div><div class="rep-sub">'+from+' to '+to+'</div><div class="stat-grid"><div class="stat-item"><span class="sv">'+myWat.length+'</span><div class="sl">Watering</div></div><div class="stat-item"><span class="sv">'+mySpr.length+'</span><div class="sl">Spraying</div></div><div class="stat-item"><span class="sv">'+totalWaterL.toLocaleString()+'L</span><div class="sl">Total Pani</div></div></div></div>';if(myWat.length+mySpr.length>0){html+='<div class="rep-card"><div class="rep-title">📋 Watering & Spraying Detail <span style="font-size:11px;color:var(--g5);font-weight:600;">— row pe click karo</span></div><div style="overflow-x:auto;"><table class="att-table"><thead><tr><th></th><th>Date</th><th>Area</th><th>Type</th><th>Method/Sprayer</th><th>Pani/Pumps</th><th>Labour</th></tr></thead><tbody>';myWat.forEach(r=>{const labs=wsLabRows.filter(w=>w._date===r._date && (w.c[2]?.v||'')===(r.c[2]?.v||'') && (w.c[3]?.v||'')==='water');let inner='';if(labs.length>0){inner+='<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">👤 Labour</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Ghante</th></tr></thead><tbody>';labs.forEach((l,idx)=>{const bg=idx%2===0?'white':'var(--gp)';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+(l.c[4]?.v||'')+'</td><td style="padding:10px;">'+(l.c[5]?.v||0)+'</td></tr>';});inner+='</tbody></table>';}else{inner='<div style="color:var(--g5);font-size:12px;">Labour detail nahi mila.</div>';}const ex=expRow(inner,7);html+='<tr class="exp-toggle" onclick="toggleRow(\''+ex.rid+'\')"><td><span class="exp-arrow">▶</span></td><td>'+formatDate(r._date)+'</td><td>'+(r.c[2]?.v||'')+'</td><td>💧 Watering</td><td>'+(r.c[6]?.v||'')+'</td><td>'+(r.c[7]?.v||0)+'L</td><td>'+(r.c[9]?.v||0)+'</td></tr>';html+=ex.row;});mySpr.forEach(r=>{const labs=wsLabRows.filter(w=>w._date===r._date && (w.c[2]?.v||'')===(r.c[2]?.v||'') && (w.c[3]?.v||'')==='spray');const chems=chemRows.filter(c=>c._date===r._date && (c.c[2]?.v||'')===(r.c[2]?.v||''));let inner='';if(chems.length>0){inner+='<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">🧪 Chemical</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Kya Kiya</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Matra</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Unit</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Purpose</th></tr></thead><tbody>';chems.forEach((c,idx)=>{const bg=idx%2===0?'white':'var(--gp)';const wt=(c.c[6]?.v||'Spray');const wtBadge=wt==='Drench'?'💧 Drench':'🌿 Spray';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+(c.c[5]?.v||'')+'</td><td style="padding:10px;font-weight:600;">'+wtBadge+'</td><td style="padding:10px;">'+(c.c[7]?.v||'')+'</td><td style="padding:10px;">'+(c.c[8]?.v||'')+'</td><td style="padding:10px;">'+(c.c[9]?.v||'')+'</td></tr>';});inner+='</tbody></table>';}if(labs.length>0){inner+='<table style="width:100%;border-collapse:collapse;margin-top:8px;"><thead><tr><th>👤 Labour</th><th>Pumps</th></tr></thead><tbody>';labs.forEach((l,idx)=>{const bg=idx%2===0?'white':'var(--gp)';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+(l.c[4]?.v||'')+'</td><td style="padding:10px;">'+(l.c[6]?.v||0)+'</td></tr>';});inner+='</tbody></table>';}if(!inner) inner='<div style="color:var(--g5);font-size:12px;">Detail nahi mila.</div>';const ex=expRow(inner,7);html+='<tr class="exp-toggle" onclick="toggleRow(\''+ex.rid+'\')"><td><span class="exp-arrow">▶</span></td><td>'+formatDate(r._date)+'</td><td>'+(r.c[2]?.v||'')+'</td><td>'+sprayScopeLabel(r.c[3]?.v||'', r.c[4]?.v||'')+'</td><td>'+(r.c[8]?.v||'')+'</td><td>'+(r.c[9]?.v||0)+' pumps</td><td>'+(r.c[12]?.v||0)+'</td></tr>';html+=ex.row;});html+='</tbody></table></div></div>';}else{html+='<div class="rep-card" style="text-align:center;color:var(--g5);padding:16px;">Watering/Spraying — koi record nahi mila.</div>';}}
+    if(!workType || workType==='water' || workType==='spray'){let watRows=parseRows(watTxt);let sprRows=parseRows(sprTxt);watRows.forEach(r=>{r._date=fixDate(r);});sprRows.forEach(r=>{r._date=fixDate(r);});const myWat=watRows.filter(r=>{if(!r._date||r._date<from||r._date>to) return false;if((r.c[1]?.v||'').toString()!==myName) return false;if(areaFilter && (r.c[2]?.v||'').toString()!==areaFilter) return false;return true;});const mySpr=sprRows.filter(r=>{if(!r._date||r._date<from||r._date>to) return false;if((r.c[1]?.v||'').toString()!==myName) return false;if(areaFilter && (r.c[2]?.v||'').toString()!==areaFilter) return false;return true;});const totalWaterL=myWat.reduce((s,r)=>s+(parseFloat(r.c[7]?.v)||0),0);html+='<div class="rep-card"><div class="rep-title">💧 Watering & Spraying — '+(myWat.length+mySpr.length)+' Records</div><div class="rep-sub">'+from+' to '+to+'</div><div class="stat-grid"><div class="stat-item"><span class="sv">'+myWat.length+'</span><div class="sl">Watering</div></div><div class="stat-item"><span class="sv">'+mySpr.length+'</span><div class="sl">Spraying</div></div><div class="stat-item"><span class="sv">'+totalWaterL.toLocaleString()+'L</span><div class="sl">Total Pani</div></div></div></div>';if(myWat.length+mySpr.length>0){html+='<div class="rep-card"><div class="rep-title">📋 Watering & Spraying Detail <span style="font-size:11px;color:var(--g5);font-weight:600;">— row pe click karo</span></div><div style="overflow-x:auto;"><table class="att-table"><thead><tr><th></th><th>Date</th><th>Area</th><th>Type</th><th>Method/Sprayer</th><th>Pani/Pumps</th><th>Labour</th></tr></thead><tbody>';myWat.forEach(r=>{const labs=wsLabRows.filter(w=>w._date===r._date && (w.c[2]?.v||'')===(r.c[2]?.v||'') && (w.c[3]?.v||'')==='water');let inner='';if(labs.length>0){inner+='<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">👤 Labour</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Ghante</th></tr></thead><tbody>';labs.forEach((l,idx)=>{const bg=idx%2===0?'white':'var(--gp)';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+(l.c[4]?.v||'')+'</td><td style="padding:10px;">'+(l.c[5]?.v||0)+'</td></tr>';});inner+='</tbody></table>';}else{inner='<div style="color:var(--g5);font-size:12px;">Labour detail nahi mila.</div>';}const ex=expRow(inner,7);html+='<tr class="exp-toggle" onclick="toggleRow(\''+ex.rid+'\')"><td><span class="exp-arrow">▶</span></td><td>'+formatDate(r._date)+'</td><td>'+(r.c[2]?.v||'')+'</td><td>💧 Watering</td><td>'+(r.c[6]?.v||'')+'</td><td>'+(r.c[7]?.v||0)+'L</td><td>'+(r.c[9]?.v||0)+'</td></tr>';html+=ex.row;});mySpr.forEach(r=>{const labs=wsLabRows.filter(w=>w._date===r._date && (w.c[2]?.v||'')===(r.c[2]?.v||'') && (w.c[3]?.v||'')==='spray');const chems=chemRows.filter(c=>c._date===r._date && (c.c[2]?.v||'')===(r.c[2]?.v||''));let inner='';if(chems.length>0){inner+='<table style="width:100%;border-collapse:collapse;"><thead><tr><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">🥬 Paudha</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">🌱 Variety</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">🧪 Dawai</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Kya Kiya</th><th style="padding:10px;background:var(--gd);color:white;font-weight:700;text-align:left;">Matra</th></tr></thead><tbody>';chems.forEach((c,idx)=>{const bg=idx%2===0?'white':'var(--gp)';const wt=(c.c[6]?.v||'Spray');const wtBadge=wt==='Drench'?'💧 Drench':'🌿 Spray';const mat=((c.c[7]?.v||'')+' '+(c.c[8]?.v||'')).trim();inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;font-weight:600;">'+(c.c[3]?.v||'')+'</td><td style="padding:10px;">'+(c.c[4]?.v||'—')+'</td><td style="padding:10px;">'+(c.c[5]?.v||'')+'</td><td style="padding:10px;font-weight:600;">'+wtBadge+'</td><td style="padding:10px;font-weight:700;">'+mat+'</td></tr>';});inner+='</tbody></table>';}if(labs.length>0){inner+='<table style="width:100%;border-collapse:collapse;margin-top:8px;"><thead><tr><th>👤 Labour</th><th>Pumps</th></tr></thead><tbody>';labs.forEach((l,idx)=>{const bg=idx%2===0?'white':'var(--gp)';inner+='<tr style="background:'+bg+';border-bottom:1px solid var(--g2);"><td style="padding:10px;">'+(l.c[4]?.v||'')+'</td><td style="padding:10px;">'+(l.c[6]?.v||0)+'</td></tr>';});inner+='</tbody></table>';}if(!inner) inner='<div style="color:var(--g5);font-size:12px;">Detail nahi mila.</div>';const ex=expRow(inner,7);html+='<tr class="exp-toggle" onclick="toggleRow(\''+ex.rid+'\')"><td><span class="exp-arrow">▶</span></td><td>'+formatDate(r._date)+'</td><td>'+(r.c[2]?.v||'')+'</td><td>'+sprayScopeLabel(r.c[3]?.v||'', r.c[4]?.v||'')+'</td><td>'+(r.c[8]?.v||'')+'</td><td>'+(r.c[9]?.v||0)+' pumps</td><td>'+(r.c[12]?.v||0)+'</td></tr>';html+=ex.row;});html+='</tbody></table></div></div>';}else{html+='<div class="rep-card" style="text-align:center;color:var(--g5);padding:16px;">Watering/Spraying — koi record nahi mila.</div>';}}
     
     con.innerHTML=html;
   }).catch((err)=>{console.error('LoadSupActivity error:', err);con.innerHTML='<div class="rep-card" style="text-align:center;color:var(--rd);padding:20px;">⚠️ Data load nahi hua. Internet check karo.</div>';});
@@ -2994,7 +3086,7 @@ function showSuc(mod, msg){
 
 function resetCurrentForm(){
   if(curMod==='seed'){document.getElementById('vCon').innerHTML='';document.getElementById('sRem').value='';vCnt=0;Object.keys(lCnt).forEach(k=>delete lCnt[k]);addV();updSS();}
-  else if(curMod==='water'){document.getElementById('cCon').innerHTML='';document.getElementById('wlCon').innerHTML='';document.getElementById('wRem').value='';document.getElementById('wLitre').value='';const _wp=document.getElementById('wPlants');if(_wp)_wp.value='';cCnt=0;wlCnt=0;setWT('water');addWL();updWS();resetSprayTargets();}
+  else if(curMod==='water'){document.getElementById('wlCon').innerHTML='';document.getElementById('wRem').value='';wlCnt=0;setWT('water');addWL();updWS();resetSprayTargets();}
   else if(curMod==='attend'){document.getElementById('attList').innerHTML='';document.getElementById('attRem').value='';renderAttLabour();}
   else if(curMod==='assign'){document.getElementById('assignCon').innerHTML='';document.getElementById('asRem').value='';akCnt=0;akLabours={};addAssignKaam();}
 }
@@ -3033,7 +3125,6 @@ function fmtDate(val){
 }
 
 
-
 // Datalists को VDATA से populate करो
 function populateCropVarietyLists() {
   // Crops
@@ -3063,48 +3154,6 @@ function populateCropVarietyLists() {
 
 // Page load पर call करो
 window.addEventListener('load', populateCropVarietyLists);
-
-// ═══ SEARCHABLE DROPDOWNS ═══
-function makeSearchableSelect(selectId, inputId, containerId) {
-  const select = document.getElementById(selectId);
-  const input = document.getElementById(inputId);
-  const container = document.getElementById(containerId);
-  if(!select || !input || !container) return;
-  
-  // Original options save करो
-  const options = Array.from(select.options).map(o => ({value: o.value, text: o.text}));
-  
-  input.addEventListener('input', function(e) {
-    const query = e.target.value.toLowerCase();
-    select.innerHTML = '<option value="">-- Select --</option>';
-    
-    options.forEach(opt => {
-      if(opt.text.toLowerCase().includes(query) || opt.value.toLowerCase().includes(query)) {
-        const el = document.createElement('option');
-        el.value = opt.value;
-        el.textContent = opt.text;
-        select.appendChild(el);
-      }
-    });
-  });
-  
-  // Select change करो तो input भी update हो
-  select.addEventListener('change', function() {
-    input.value = select.options[select.selectedIndex]?.text || '';
-  });
-  
-  // Focus पर पूरी list दिखाओ
-  input.addEventListener('focus', function() {
-    input.value = '';
-    select.innerHTML = '<option value="">-- Select --</option>';
-    options.forEach(opt => {
-      const el = document.createElement('option');
-      el.value = opt.value;
-      el.textContent = opt.text;
-      select.appendChild(el);
-    });
-  });
-}
 
 function toast(msg,type='success'){
   const t=document.getElementById('toast');
@@ -3165,50 +3214,191 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-let tgtCnt = 0;
-function addTgt(){
-  tgtCnt++; const tid = tgtCnt;
+let spLineCnt = 0;
+let CHEM_LIST = [];
+
+// Register jaisi ek line: paudha + variety(multi) + dawai + matra + unit + type
+function addSprayLine(){
+  spLineCnt++; const id = spLineCnt;
   const d = document.createElement('div');
-  d.className = 'tgtrow'; d.id = 'tgt-'+tid;
-  d.style.cssText = 'display:grid;grid-template-columns:1fr 1fr auto;gap:6px;align-items:end;margin-bottom:8px;';
+  d.className = 'cblock'; d.id = 'spl-'+id;
   d.innerHTML =
-    '<div><label style="font-size:11px;">\u{1F96C} Crop</label>'+
-    '<input type="text" id="tc-'+tid+'" list="cropList" placeholder="\u{1F50D} Search..." style="width:100%;padding:8px;border:1px solid var(--g2);border-radius:6px;" onchange="loadTgtVar('+tid+')"></div>'+
-    '<div><label style="font-size:11px;">\u{1F331} Variety (optional)</label>'+
-    '<select id="tv-'+tid+'" style="width:100%;padding:8px;border:1px solid var(--g2);border-radius:6px;"><option value="">-- Poora Crop --</option></select></div>'+
-    (tid>1 ? '<button type="button" class="rmbtn" onclick="remTgt('+tid+')" style="padding:8px 10px;">\u2715</button>' : '<div></div>');
-  document.getElementById('tgtCon').appendChild(d);
+    '<div class="cbh"><div class="cbt"><div class="cn">'+id+'</div> Line '+id+'</div>'+
+      (id>1 ? '<button class="rmbtn" onclick="remSprayLine('+id+')">\u2715</button>' : '')+
+    '</div>'+
+    '<div class="cbb">'+
+      '<div class="fr cvpart"><label>\u{1F96C} Paudha (Crop)</label>'+
+        '<input type="text" id="slc-'+id+'" list="cropList" placeholder="\u{1F50D} TOMATO, MIRCHI..." onchange="loadLineVar('+id+')"></div>'+
+      '<div class="fr cvpart"><label>\u{1F331} Variety <span id="slvc-'+id+'" style="font-weight:700;color:var(--gd);font-size:11px;">(0 chuni)</span></label>'+
+        '<input type="text" id="slvs-'+id+'" placeholder="\u{1F50D} Variety dhundhein..." oninput="filterVariety('+id+')" autocomplete="off" style="width:100%;padding:10px;border:1px solid var(--g2);border-radius:6px;margin-bottom:6px;font-size:15px;">'+
+        '<div id="slv-'+id+'" style="display:flex;flex-wrap:wrap;gap:6px;padding:8px;border:1px solid var(--g2);border-radius:6px;background:var(--g1);min-height:38px;max-height:190px;overflow-y:auto;align-items:flex-start;align-content:flex-start;">'+
+          '<span style="color:var(--g5);font-size:12px;">Pehle crop chunein...</span></div></div>'+
+      '<div class="fr"><label>\u{1F9EA} Dawai / Khaad</label>'+
+        '<input type="text" id="sln-'+id+'" list="chemList" placeholder="\u{1F50D} Calcium, 00:00:50, Armimetar..."></div>'+
+      '<div class="g3">'+
+        '<div><label>\u{1F4CF} Matra</label><input type="number" id="sld-'+id+'" placeholder="0" step="0.1"></div>'+
+        '<div><label>\u{1F4D0} Unit</label><select id="slu-'+id+'">'+
+          '<option>gm</option><option>ML</option><option>gm/pump</option><option>ml/pump</option>'+
+          '<option>gm/litre</option><option>ml/litre</option><option>kg</option><option>litre</option></select></div>'+
+        '<div><label>\u{1F489} Kya Kiya</label><select id="slt-'+id+'" style="font-weight:600;">'+
+          '<option value="Spray">\u{1F33F} Spray</option><option value="Drench">\u{1F4A7} Drench</option></select></div>'+
+      '</div>'+
+    '</div>';
+  document.getElementById('spLineCon').appendChild(d);
 }
-function remTgt(id){ const el=document.getElementById('tgt-'+id); if(el) el.remove(); }
-function loadTgtVar(id){
-  const crop = document.getElementById('tc-'+id).value;
-  const sel = document.getElementById('tv-'+id);
-  sel.innerHTML = '<option value="">-- Poora Crop --</option>';
-  if(crop && VDATA[crop]){
-    VDATA[crop].forEach(v => sel.innerHTML += '<option>'+v+'</option>');
+
+function remSprayLine(id){
+  const el = document.getElementById('spl-'+id);
+  if(el) el.remove();
+}
+
+// Crop chunte hi us crop ki saari variety checkbox banao
+function loadLineVar(id){
+  const crop = (document.getElementById('slc-'+id)?.value||'').trim();
+  const box = document.getElementById('slv-'+id);
+  const srch = document.getElementById('slvs-'+id);
+  if(!box) return;
+  if(srch){ srch.value=''; }
+  const vars = VDATA[crop] || [];
+  if(!vars.length){
+    box.innerHTML = '<span style="color:var(--g5);font-size:12px;">Is crop ki variety nahi mili \u2014 poora crop maana jayega</span>';
+    updVarCount(id);
+    return;
+  }
+  let h = '';
+  vars.forEach(function(v){
+    const safe = v.replace(/"/g,'&quot;');
+    h += '<label class="vchip" data-v="'+safe.toLowerCase()+'" style="display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border:2px solid var(--g2);border-radius:16px;background:white;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.15s;">'+
+      '<input type="checkbox" class="slvchk-'+id+'" value="'+safe+'" style="width:16px;height:16px;" onchange="markChip(this)">'+v+'</label>';
+  });
+  box.innerHTML = h;
+  updVarCount(id);
+}
+
+// Search se variety filter — chuni hui hamesha dikhegi
+function filterVariety(id){
+  const q = (document.getElementById('slvs-'+id)?.value||'').trim().toLowerCase();
+  const box = document.getElementById('slv-'+id);
+  if(!box) return;
+  let shown = 0;
+  box.querySelectorAll('label.vchip').forEach(function(lab){
+    const cb = lab.querySelector('input');
+    const match = !q || (lab.getAttribute('data-v')||'').includes(q);
+    // chuni hui variety kabhi nahi chhupegi
+    if(match || (cb && cb.checked)){ lab.style.display='inline-flex'; shown++; }
+    else lab.style.display='none';
+  });
+  let msg = box.querySelector('.novar');
+  if(shown===0){
+    if(!msg){
+      msg = document.createElement('span');
+      msg.className='novar';
+      msg.style.cssText='color:var(--g5);font-size:12px;';
+      box.appendChild(msg);
+    }
+    msg.textContent='"'+q+'" naam ki koi variety nahi mili';
+    msg.style.display='inline';
+  } else if(msg){ msg.style.display='none'; }
+}
+
+// Kitni variety chuni hai — label me dikhao
+function updVarCount(id){
+  const el = document.getElementById('slvc-'+id);
+  if(!el) return;
+  const n = document.querySelectorAll('.slvchk-'+id+':checked').length;
+  el.textContent = n>0 ? '('+n+' chuni)' : '(0 chuni)';
+  el.style.color = n>0 ? 'var(--gd)' : 'var(--g5)';
+}
+
+// Variety chip select hone par hara highlight
+function markChip(cb){
+  const lab = cb.closest('label');
+  if(!lab) return;
+  // count update karo
+  const cls = (cb.className||'').match(/slvchk-(\d+)/);
+  if(cls) updVarCount(cls[1]);
+  if(cb.checked){
+    lab.style.background = 'var(--gd)';
+    lab.style.color = 'white';
+    lab.style.borderColor = 'var(--gd)';
+  } else {
+    lab.style.background = 'white';
+    lab.style.color = '';
+    lab.style.borderColor = 'var(--g2)';
   }
 }
 function toggleAllArea(){
   const on = document.getElementById('spAllArea').checked;
-  document.getElementById('spTargetWrap').style.display = on ? 'none' : 'block';
+  // Poora Area = crop/variety mat pucho, par dawai/matra ki line rahegi
+  document.querySelectorAll('#spLineCon .cvpart').forEach(function(el){
+    el.style.display = on ? 'none' : 'block';
+  });
 }
-// Sabhi target rows ko ek readable string me badlo. Poora Area -> "Poora Area".
-function buildTargetString(){
-  if(document.getElementById('spAllArea')?.checked) return 'Poora Area';
+
+// Saari lines collect karo -> [{crop, variety, name, dose, unit, workType}]
+function buildSprayLines(){
+  const allArea = !!document.getElementById('spAllArea')?.checked;
+  const out = [];
+  document.querySelectorAll('[id^="spl-"]').forEach(function(el){
+    const id = el.id.split('-')[1];
+    const name = (document.getElementById('sln-'+id)?.value||'').trim();
+    let crop = (document.getElementById('slc-'+id)?.value||'').trim();
+    const vs = [];
+    document.querySelectorAll('.slvchk-'+id+':checked').forEach(function(cb){ vs.push(cb.value); });
+    if(allArea){ crop = 'Poora Area'; vs.length = 0; }
+    if(!name && !crop) return; // bilkul khali line skip
+    out.push({
+      crop: crop,
+      variety: vs.join(' + '),
+      name: name,
+      dose: document.getElementById('sld-'+id)?.value || 0,
+      unit: document.getElementById('slu-'+id)?.value || '',
+      workType: document.getElementById('slt-'+id)?.value || 'Spray',
+      _allArea: allArea
+    });
+  });
+  return out;
+}
+
+// Report/summary ke liye chhota target string
+function spraySummaryString(lines){
+  if(!lines.length) return '';
+  if(lines[0] && lines[0]._allArea) return 'Poora Area';
   const parts = [];
-  document.querySelectorAll('[id^="tgt-"]').forEach(el=>{
-    const tid = el.id.split('-')[1];
-    const crop = (document.getElementById('tc-'+tid)?.value||'').trim();
-    const vr = (document.getElementById('tv-'+tid)?.value||'').trim();
-    if(!crop) return;
-    parts.push(vr ? crop+'/'+vr : crop+' (sabhi)');
+  lines.forEach(function(l){
+    if(!l.crop) return;
+    const s = l.variety ? l.crop+'/'+l.variety : l.crop+' (sabhi)';
+    if(parts.indexOf(s) === -1) parts.push(s);
   });
   return parts.join(', ');
 }
+
+// Purani dawaiyan Chemical Records se load karo (search suggestions)
+function loadChemList(){
+  const dl = document.getElementById('chemList');
+  if(!dl) return;
+  fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet=Chemical%20Records&headers=1&t='+Date.now())
+    .then(function(r){ return r.text(); })
+    .then(function(txt){
+      const rows = dashParse(txt);
+      const seen = {};
+      rows.forEach(function(r){
+        const n = (r.c[5]?.v||'').toString().trim();
+        if(n && !seen[n]) seen[n] = true;
+      });
+      CHEM_LIST = Object.keys(seen).sort();
+      dl.innerHTML = '';
+      CHEM_LIST.forEach(function(n){
+        const o = document.createElement('option'); o.value = n; dl.appendChild(o);
+      });
+    })
+    .catch(function(){});
+}
+
 function resetSprayTargets(){
   const cb = document.getElementById('spAllArea'); if(cb) cb.checked = false;
-  const wrap = document.getElementById('spTargetWrap'); if(wrap) wrap.style.display = 'block';
-  const con = document.getElementById('tgtCon'); if(con){ con.innerHTML=''; tgtCnt=0; addTgt(); }
+  const wrap = document.getElementById('spLineWrap'); if(wrap) wrap.style.display = 'block';
+  const con = document.getElementById('spLineCon'); if(con){ con.innerHTML=''; spLineCnt=0; addSprayLine(); }
 }
 
 function loadShiftingVarieties(){
@@ -4092,6 +4282,305 @@ function generateBookingPDF(d){
 }
 
 // ─────── BOOKING REPORT ───────
+// ════════════════════════ BOSS DASHBOARD ════════════════════════
+function openDashboard(){
+  const from = new Date(); from.setDate(from.getDate()-30);
+  document.getElementById('dashFrom').valueAsDate = from;
+  document.getElementById('dashTo').valueAsDate = new Date();
+  document.getElementById('dashSearch').value = '';
+  const isSup = (curUser.role === 'Supervisor');
+  document.getElementById('dashSupB').textContent =
+    (isSup?'👷':curUser.role==='Manager'?'👔':curUser.role==='Marketing'?'📣':'👑')+' '+curUser.name;
+  document.getElementById('dashContent').innerHTML = '';
+  show('dashScreen');
+  loadDashboard();
+}
+
+// gviz parse helper
+function dashParse(txt){
+  try{
+    const j = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+    return j.table.rows.filter(r=>r.c && r.c[0] && r.c[0].v && r.c[0].v!=='Date');
+  }catch(e){ return []; }
+}
+function dashDate(r){
+  if(!r.c||!r.c[0]||!r.c[0].v) return '';
+  let d=r.c[0].v.toString();
+  if(d.startsWith('Date(')){
+    const p=d.replace('Date(','').replace(')','').split(',');
+    d=p[0]+'-'+String(parseInt(p[1])+1).padStart(2,'0')+'-'+String(p[2]).padStart(2,'0');
+  }
+  return d;
+}
+function nz(v){ return (v===undefined||v===null)?'':v; }
+function num(v){ const n=parseFloat(v); return isNaN(n)?0:n; }
+
+function loadDashboard(){
+  const from = document.getElementById('dashFrom').value;
+  const to = document.getElementById('dashTo').value;
+  const con = document.getElementById('dashContent');
+  const isSup = (curUser.role === 'Supervisor');
+  const me = curUser.name;
+  con.innerHTML = '<div class="card" style="text-align:center;padding:30px;"><div style="font-size:34px;">⏳</div><div style="font-weight:700;color:var(--gd);margin-top:6px;">Sari report load ho rahi hai...</div><div style="font-size:12px;color:var(--g5);margin-top:4px;">Thoda time lagega — 10 report ek saath</div></div>';
+
+  const ts = Date.now();
+  const S = name => fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet='+name+'&headers=1&t='+ts).then(r=>r.text()).catch(()=>'');
+
+  Promise.all([
+    S('Seed%20Sowing%20Data'),      // 0
+    S('Seed%20Labour%20Data'),      // 1
+    S('Watering%20Records'),        // 2
+    S('Spraying%20Records'),        // 3
+    S('Chemical%20Records'),        // 4
+    S('Attendance%20Records'),      // 5
+    S('Morning%20Assignment'),      // 6
+    S('Shifting%20Data'),           // 7
+    S('Dispatch%20Data'),           // 8
+    S('Booking%20Data'),            // 9
+    S('W-S%20Labour')               // 10
+  ]).then(function(T){
+    const seed=dashParse(T[0]), seedLab=dashParse(T[1]), wat=dashParse(T[2]),
+          spr=dashParse(T[3]), chem=dashParse(T[4]), att=dashParse(T[5]),
+          assign=dashParse(T[6]), shift=dashParse(T[7]), disp=dashParse(T[8]),
+          book=dashParse(T[9]), wsLab=dashParse(T[10]);
+    [seed,seedLab,wat,spr,chem,att,assign,shift,disp,book,wsLab].forEach(function(arr){
+      arr.forEach(function(r){ r._d=dashDate(r); });
+    });
+
+    // date + supervisor filter helper (supervisor col varies per sheet)
+    function flt(arr, supCol){
+      return arr.filter(function(r){
+        if(!r._d || r._d<from || r._d>to) return false;
+        if(isSup && supCol!==null && (nz(r.c[supCol]?.v).toString()!==me)) return false;
+        return true;
+      });
+    }
+
+    let html='';
+
+    // ═══ 1. SEED SOWING ═══ (Data: 0Date 1Sup 2Area 4Veg 5Var 6Lot 7Pkt 8Trays 11Plants)
+    (function(){
+      const rows=flt(seed,1);
+      let pkt=0,tray=0,pl=0;
+      rows.forEach(function(r){pkt+=num(r.c[7]?.v);tray+=num(r.c[8]?.v);pl+=num(r.c[11]?.v);});
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+pkt.toLocaleString()+'</span><div class="dsl">Total PKT</div></div><div class="dsi"><span class="dsv">'+tray.toLocaleString()+'</span><div class="dsl">Trays</div></div><div class="dsi"><span class="dsv">'+pl.toLocaleString()+'</span><div class="dsl">Plants</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Veg</th><th>Variety</th><th>PKT</th><th>Trays</th><th>Plants</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+nz(r.c[4]?.v)+'</td><td>'+nz(r.c[5]?.v)+'</td><td>'+num(r.c[7]?.v)+'</td><td>'+num(r.c[8]?.v)+'</td><td>'+num(r.c[11]?.v).toLocaleString()+'</td></tr>';
+        });
+        body+='<tr class="dtot-row"><td colspan="'+(isSup?4:5)+'">TOTAL</td><td>'+pkt+'</td><td>'+tray+'</td><td>'+pl.toLocaleString()+'</td></tr>';
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi seed sowing record nahi.</div>';
+      html+=dashCard('🌱','Seed Sowing',rows.length,body);
+    })();
+
+    // ═══ 2. WATERING ═══ (ab sirf 0Date 1Sup 2Area — labour W-S Labour sheet me)
+    (function(){
+      const rows=flt(wat,1);
+      // Labour count nikalo (W-S Labour: 0Date 2Area 3Type 4Labour)
+      const wLab=wsLab.filter(function(l){
+        if(!l._d || l._d<from || l._d>to) return false;
+        if(nz(l.c[3]?.v).toString()!=='water') return false;
+        if(isSup && nz(l.c[1]?.v).toString()!==me) return false;
+        return true;
+      });
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Records</div></div><div class="dsi"><span class="dsv">'+wLab.length+'</span><div class="dsl">Labour Entries</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Labour</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          const ls=wLab.filter(function(l){ return l._d===r._d && nz(l.c[2]?.v)===nz(r.c[2]?.v); })
+                       .map(function(l){ return nz(l.c[4]?.v); }).filter(Boolean);
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+(ls.join(', ')||'—')+'</td></tr>';
+        });
+        body+='<tr class="dtot-row"><td colspan="'+(isSup?2:3)+'">TOTAL</td><td>'+rows.length+' din</td></tr>';
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi watering record nahi.</div>';
+      html+=dashCard('💧','Watering',rows.length,body);
+    })();
+
+    // ═══ 3. SPRAY / DRENCHING ═══ (Spraying: 0Date 1Sup 2Area 3Crop(target) 8Sprayer 9Pump ; Chemical: 0Date 1Sup 2Area 3Crop 5Chem 6WorkType 7Dose 8Unit 9Purpose)
+    (function(){
+      const rows=flt(spr,1);
+      const chemRows=flt(chem,1);
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Spray Sessions</div></div><div class="dsi"><span class="dsv">'+chemRows.length+'</span><div class="dsl">Chemical Entries</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Kahan Kiya</th><th>Pumps</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+sprayScopeLabel(nz(r.c[3]?.v),'')+'</td><td>'+nz(r.c[9]?.v)+'</td></tr>';
+        });
+        body+='</tbody></table></div>';
+      }
+      if(chemRows.length){
+        body+='<div class="dash-sub">📒 Register Detail</div><div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th><th>Area</th><th>Paudha</th><th>Variety</th><th>Dawai</th><th>Kya Kiya</th><th>Matra</th></tr></thead><tbody>';
+        chemRows.forEach(function(r){
+          const wt=nz(r.c[6]?.v)||'Spray'; const badge=wt==='Drench'?'💧 Drench':'🌿 Spray';
+          const mat=(nz(r.c[7]?.v)+' '+nz(r.c[8]?.v)).trim();
+          body+='<tr><td>'+formatDate(r._d)+'</td><td>'+nz(r.c[2]?.v)+'</td><td><b>'+nz(r.c[3]?.v)+'</b></td><td>'+(nz(r.c[4]?.v)||'—')+'</td><td>'+nz(r.c[5]?.v)+'</td><td>'+badge+'</td><td><b>'+mat+'</b></td></tr>';
+        });
+        body+='</tbody></table></div>';
+      }
+      if(!rows.length && !chemRows.length) body+='<div class="dash-empty">Koi spray/drench record nahi.</div>';
+      html+=dashCard('🌿','Spray / Drenching',rows.length,body);
+    })();
+
+    // ═══ 4. ATTENDANCE ═══ (asli: 0Date 1Sup 2Area 4Labour 5Status; status='Present'/'Half Day'/'Absent')
+    (function(){
+      const rows=flt(att,1);
+      let present=0,half=0,absent=0;
+      rows.forEach(function(r){const st=nz(r.c[5]?.v).toString();if(st==='Present')present++;else if(st==='Half Day')half++;else if(st==='Absent')absent++;});
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+present+'</span><div class="dsl">Present</div></div><div class="dsi"><span class="dsv">'+half+'</span><div class="dsl">Half Day</div></div><div class="dsi"><span class="dsv">'+absent+'</span><div class="dsl">Absent</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Labour</th><th>Status</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+nz(r.c[4]?.v)+'</td><td>'+nz(r.c[5]?.v)+'</td></tr>';
+        });
+        body+='<tr class="dtot-row"><td colspan="'+(isSup?4:5)+'">Total: '+rows.length+' entries</td></tr>';
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi attendance record nahi.</div>';
+      html+=dashCard('👷','Attendance',rows.length,body);
+    })();
+
+    // ═══ 5. MORNING ASSIGNMENT ═══ (0Date 1Sup 2Area 3Kaam 4Labour)
+    (function(){
+      const rows=flt(assign,1);
+      let totLab=0; rows.forEach(function(r){totLab+=nz(r.c[4]?.v).toString().split(',').filter(function(s){return s.trim();}).length;});
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Assignments</div></div><div class="dsi"><span class="dsv">'+totLab+'</span><div class="dsl">Total Labour</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Kaam</th><th>Labour</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+nz(r.c[3]?.v)+'</td><td>'+nz(r.c[4]?.v)+'</td></tr>';
+        });
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi assignment record nahi.</div>';
+      html+=dashCard('📋','Morning Assignment',rows.length,body);
+    })();
+
+    // ═══ 6. SHIFTING ═══ (asli: 0Date 1Sup 2Area 3Crop 4Var 5Labour 6Trays)
+    (function(){
+      const rows=flt(shift,1);
+      let trays=0; rows.forEach(function(r){trays+=num(r.c[6]?.v);});
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Records</div></div><div class="dsi"><span class="dsv">'+trays.toLocaleString()+'</span><div class="dsl">Total Trays</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th>'+(isSup?'':'<th>Sup</th>')+'<th>Area</th><th>Crop</th><th>Variety</th><th>Labour</th><th>Trays</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td>'+(isSup?'':'<td>'+nz(r.c[1]?.v)+'</td>')+'<td>'+nz(r.c[2]?.v)+'</td><td>'+nz(r.c[3]?.v)+'</td><td>'+nz(r.c[4]?.v)+'</td><td>'+nz(r.c[5]?.v)+'</td><td>'+num(r.c[6]?.v)+'</td></tr>';
+        });
+        body+='<tr class="dtot-row"><td colspan="'+(isSup?5:6)+'">TOTAL</td><td>'+trays.toLocaleString()+'</td></tr>';
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi shifting record nahi.</div>';
+      html+=dashCard('🔄','Shifting',rows.length,body);
+    })();
+
+    // ═══ 7. DISPATCH ═══ (0Date 1Area 2Sup 3Gaadi 4Driver 6Crop 7Var 12Total ...) supervisor col=2
+    (function(){
+      const rows=flt(disp,2);
+      let plants=0; rows.forEach(function(r){plants+=num(r.c[12]?.v);});
+      let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Dispatches</div></div><div class="dsi"><span class="dsv">'+plants.toLocaleString()+'</span><div class="dsl">Total Plants</div></div></div>';
+      if(rows.length){
+        body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th><th>Area</th>'+(isSup?'':'<th>Sup</th>')+'<th>Gaadi</th><th>Crop</th><th>Variety</th><th>Plants</th></tr></thead><tbody>';
+        rows.forEach(function(r){
+          body+='<tr><td>'+formatDate(r._d)+'</td><td>'+nz(r.c[1]?.v)+'</td>'+(isSup?'':'<td>'+nz(r.c[2]?.v)+'</td>')+'<td>'+nz(r.c[3]?.v)+'</td><td>'+nz(r.c[6]?.v)+'</td><td>'+nz(r.c[7]?.v)+'</td><td>'+num(r.c[12]?.v).toLocaleString()+'</td></tr>';
+        });
+        body+='<tr class="dtot-row"><td colspan="'+(isSup?5:6)+'">TOTAL</td><td>'+plants.toLocaleString()+'</td></tr>';
+        body+='</tbody></table></div>';
+      } else body+='<div class="dash-empty">Koi dispatch record nahi.</div>';
+      html+=dashCard('🚚','Dispatch',rows.length,body);
+    })();
+
+    // ═══ 8. BOOKING ═══ (0Date 1Farmer 2Village 5Crop 6Var 7Plant 18TotalRecv 20Status)  marketing/all only, supervisor=skip
+    if(!isSup){
+      (function(){
+        const rows=flt(book,null);
+        let plants=0,recv=0;
+        rows.forEach(function(r){plants+=num(r.c[7]?.v);recv+=num(r.c[18]?.v);});
+        let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+rows.length+'</span><div class="dsl">Bookings</div></div><div class="dsi"><span class="dsv">'+plants.toLocaleString()+'</span><div class="dsl">Total Plants</div></div><div class="dsi"><span class="dsv">₹'+recv.toLocaleString()+'</span><div class="dsl">Received</div></div></div>';
+        if(rows.length){
+          body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Date</th><th>Farmer</th><th>Village</th><th>Crop</th><th>Variety</th><th>Plants</th><th>Status</th></tr></thead><tbody>';
+          rows.forEach(function(r){
+            body+='<tr><td>'+formatDate(r._d)+'</td><td>'+nz(r.c[1]?.v)+'</td><td>'+nz(r.c[2]?.v)+'</td><td>'+nz(r.c[5]?.v)+'</td><td>'+nz(r.c[6]?.v)+'</td><td>'+num(r.c[7]?.v).toLocaleString()+'</td><td>'+nz(r.c[20]?.v)+'</td></tr>';
+          });
+          body+='<tr class="dtot-row"><td colspan="5">TOTAL</td><td>'+plants.toLocaleString()+'</td><td></td></tr>';
+          body+='</tbody></table></div>';
+        } else body+='<div class="dash-empty">Koi booking record nahi.</div>';
+        html+=dashCard('📝','Booking',rows.length,body);
+      })();
+
+      // ═══ 9. VARIETY SUMMARY (from booking) ═══
+      (function(){
+        const rows=flt(book,null);
+        const byCV={};
+        rows.forEach(function(r){
+          const c=nz(r.c[5]?.v)||'?', v=nz(r.c[6]?.v)||'?';
+          const key=c+' / '+v;
+          if(!byCV[key]) byCV[key]={plants:0,count:0};
+          byCV[key].plants+=num(r.c[7]?.v); byCV[key].count++;
+        });
+        const keys=Object.keys(byCV).sort(function(a,b){return byCV[b].plants-byCV[a].plants;});
+        let totPl=0; keys.forEach(function(k){totPl+=byCV[k].plants;});
+        let body='<div class="dash-stat"><div class="dsi"><span class="dsv">'+keys.length+'</span><div class="dsl">Crop/Variety</div></div><div class="dsi"><span class="dsv">'+totPl.toLocaleString()+'</span><div class="dsl">Total Plants</div></div></div>';
+        if(keys.length){
+          body+='<div class="dash-wrap"><table class="dash-tbl"><thead><tr><th>Crop / Variety</th><th>Bookings</th><th>Plants</th></tr></thead><tbody>';
+          keys.forEach(function(k){
+            body+='<tr><td>'+k+'</td><td>'+byCV[k].count+'</td><td>'+byCV[k].plants.toLocaleString()+'</td></tr>';
+          });
+          body+='<tr class="dtot-row"><td>TOTAL</td><td>'+rows.length+'</td><td>'+totPl.toLocaleString()+'</td></tr>';
+          body+='</tbody></table></div>';
+        } else body+='<div class="dash-empty">Koi data nahi.</div>';
+        html+=dashCard('🌾','Variety Summary',keys.length,body);
+      })();
+    }
+
+    con.innerHTML = html || '<div class="dash-empty">Koi data nahi mila.</div>';
+    // Search dobara apply karo agar search box me kuch hai
+    dashFilterSearch();
+  }).catch(function(e){
+    con.innerHTML = '<div class="card" style="text-align:center;color:var(--rd);padding:20px;">⚠️ Dashboard load nahi hua. Internet check karo aur dobara try karo.</div>';
+  });
+}
+
+// Ek collapsible card banao
+function dashCard(icon, title, count, bodyHtml){
+  return '<div class="dash-card" data-title="'+title.toLowerCase()+'">'+
+    '<div class="dash-head" onclick="this.parentElement.classList.toggle(\'open\')">'+
+      '<span class="di">'+icon+'</span>'+
+      '<span class="dt">'+title+'</span>'+
+      '<span class="dtot">Kul: '+count+'</span>'+
+      '<span class="darrow">▶</span>'+
+    '</div>'+
+    '<div class="dash-body">'+bodyHtml+'</div>'+
+  '</div>';
+}
+
+// Search — kisi bhi card me matching row dikhe, baaki hide
+function dashFilterSearch(){
+  const q = (document.getElementById('dashSearch')?.value||'').trim().toLowerCase();
+  const cards = document.querySelectorAll('#dashContent .dash-card');
+  cards.forEach(function(card){
+    const rows = card.querySelectorAll('.dash-tbl tbody tr:not(.dtot-row)');
+    if(!q){
+      card.classList.remove('dash-hidden');
+      rows.forEach(function(r){ r.classList.remove('dash-hidden'); });
+      return;
+    }
+    let anyMatch=false;
+    rows.forEach(function(r){
+      const txt=r.textContent.toLowerCase();
+      if(txt.includes(q)){ r.classList.remove('dash-hidden'); anyMatch=true; }
+      else r.classList.add('dash-hidden');
+    });
+    // Card title bhi match kare to poora card dikhao
+    const titleMatch = (card.getAttribute('data-title')||'').includes(q);
+    if(anyMatch || titleMatch){
+      card.classList.remove('dash-hidden');
+      card.classList.add('open'); // match hone par khol do
+      if(titleMatch && !anyMatch) rows.forEach(function(r){ r.classList.remove('dash-hidden'); });
+    } else {
+      card.classList.add('dash-hidden');
+    }
+  });
+}
+
 function openBookingReport(){
   const from = new Date(); from.setDate(from.getDate()-30);
   document.getElementById('brFrom').valueAsDate = from;
@@ -5144,6 +5633,7 @@ function loadDispatchReport(){
 
     <!-- CROP AND VARIETY DATALISTS FOR SEARCH -->
     <datalist id="cropList"></datalist>
+    <datalist id="chemList"></datalist>
     <datalist id="varietyList"></datalist>
 </body>
 </html>
