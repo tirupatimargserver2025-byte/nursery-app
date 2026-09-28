@@ -1969,7 +1969,7 @@ function formatDate(dateStr) {
 }
 // ═══ AUTO-UPDATE: naya version aate hi app khud refresh ho jayega ═══
 // Deploy karte waqt ye number badal jata hai -> purana app khud naya version le lega
-const APP_VERSION = '20260928-1000b';
+const APP_VERSION = '20260928-1005b';
 (function autoUpdateCheck(){
   // Loop guard: abhi abhi update hua hai to dobara check mat karo
   if(location.search.indexOf('v=') !== -1) return;
@@ -6158,7 +6158,7 @@ const FZ_ZONES = ['कटिंग झोन','देवेन्द्र भ�
 const FZ_WORK = ['कटिंग लगाने पर','लोडिंग कार्य','शिफ्टिंग कार्य','आर्डर निकलने पर','चाला पल्टी पर','पौधा जमाने पर','निंदाई पर','स्प्रे पर','ड्रिंचिंग पर','कटिंग करने पर','सीड सोइंग पर','चंदन में होस्ट लगाने पर','चंदन में होस्ट काटने पर','पाइपलाइन रिपेयरिंग कार्य','ग्राफ्टिंग करने पर','साफ-सफाई + कचरा फेंकने पर','बेट में पत्ती जमाने पर','शावर से पानी पर','बेड से पानी पर','अन्य कार्य पर'];
 const FZ_CATS = ['फलदार','फॉरेस्ट्री','फूल वाले','ऑर्नामेंटल','अन्य'];
 const FZ_SHEETS = {
-  assign: {name:'F-Morning Assignment', cols:['Date','Supervisor','Zone','Kaam','Labour Names','Total Labour','Remarks']},
+  assign: {name:'Morning Assignment',   cols:['Date','Supervisor','Zone','Kaam','Labour Names','Total Labour','Vibhag','Remarks']},
   shift:  {name:'F-Bag Shifting',       cols:['Date','Supervisor','Zone','Category','Plant','Purana Bag','Naya Bag','Labour Name','Qty','Remarks']},
   water:  {name:'F-Watering Spraying',  cols:['Date','Supervisor','Zone','Kaam','Category','Plant','Dawai','Labour Names','Total Labour','Remarks']},
   load:   {name:'F-Loading',            cols:['Date','Supervisor','Zone','Party','Gaadi No','Driver','Category','Plant','Size','Qty','Labour Names','Total Labour','Remarks']}
@@ -6560,6 +6560,7 @@ function fzParseSheet(txt, key){
     var o = {};
     cols.forEach(function(c, i){ var cell = r.c[i]; o[c] = cell && cell.v!=null ? cell.v : ''; });
     o.Date = fzISO(o.Date);
+    if(key==='assign' && String(o.Vibhag).trim()!=='Faldar' && FZ_ZONES.indexOf(String(o.Zone).trim())===-1) return;  // sabji wali line
     out.push(o);
   });
   return out;
