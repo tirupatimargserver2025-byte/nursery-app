@@ -471,6 +471,32 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 .crop-card[data-open="1"]{box-shadow:0 3px 10px rgba(16,40,28,0.09);}
 .crop-body{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
 .crop-card[data-open="1"] .crop-body{max-height:1200px;}
+
+/* ══ FALDAR / FORESTRY MODULE ══ */
+.mcard.fz .ico{background:linear-gradient(135deg,#fdecd8,#f7d3a8);}
+.mcard.fz .ico i{color:#a4540f;}
+.fz-sub{background:linear-gradient(135deg,#c77a2e,#9a5316) !important;box-shadow:0 4px 20px rgba(154,83,22,0.35) !important;}
+.fz-blk{border:2px solid #f3cf9f;border-radius:var(--r);margin-bottom:12px;overflow:hidden;background:#fffaf3;}
+.fz-bh{background:linear-gradient(135deg,#9a5316,#c77a2e);padding:9px 14px;display:flex;align-items:center;justify-content:space-between;color:white;font-size:13px;font-weight:700;}
+.fz-bb{padding:12px;}
+.fz-pl{border:1.5px solid #eadcc8;border-radius:10px;padding:10px;margin-bottom:10px;background:white;position:relative;}
+.fz-pl-n{font-size:11px;font-weight:800;color:#9a5316;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.fz-x{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--rd);font-size:16px;font-weight:800;cursor:pointer;}
+.fz-pick-row{display:flex;gap:6px;margin-bottom:8px;}
+.fz-pick-row input{flex:1;}
+.fz-pick-row button{background:#c77a2e;color:white;border:none;border-radius:var(--rs);padding:9px 14px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.fz-kt{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.fz-ktb{padding:12px 6px;border:2px solid var(--g2);border-radius:10px;background:white;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;color:#34495e;}
+.fz-ktb.on{border-color:var(--bm);background:var(--bp);color:var(--bd);}
+.fz-dw{border-top:1px dashed var(--g2);padding-top:8px;margin-top:8px;position:relative;}
+.fz-tw{overflow-x:auto;}
+.fz-tbl{width:100%;border-collapse:collapse;font-size:12.5px;min-width:480px;}
+.fz-tbl th{padding:8px 10px;background:#fbf1e4;color:#7a4a17;font-weight:700;font-size:11px;text-transform:uppercase;border-bottom:2px solid #f0dcc2;text-align:left;white-space:nowrap;}
+.fz-tbl td{padding:8px 10px;border-bottom:1px solid #f3ebe0;color:#2a3a33;vertical-align:top;}
+.fz-tbl tbody tr:nth-child(even){background:#fffbf6;}
+.fz-tbl tr.fz-tot td{background:#fdebd3;color:#7a3f0c;font-weight:800;}
+.fz-lab{font-size:11.5px;color:#5a6a63;}
+#fzReportContent .crop-card[data-open="1"] .crop-body{max-height:none;}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -556,6 +582,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div class="mcard entry" onclick="openShiftingForm()"><div class="ico"><i class="ti ti-refresh"></i></div><div class="ttl">Shifting</div><div class="dsc">Labour shifting records</div></div>
         <div class="mcard entry" onclick="openDispatchForm()"><div class="ico"><i class="ti ti-truck"></i></div><div class="ttl">Dispatch</div><div class="dsc">Vehicle dispatch</div></div>
       </div></div></div>
+      <div class="msec-acc" data-open="0"><div class="msec-head" onclick="togSec(this)"><div class="mh-left"><i class="ti ti-trees"></i>Faldar / Forestry / Phool</div><div class="mh-right"><span class="msec-count">5</span><i class="ti ti-chevron-down msec-chev"></i></div></div><div class="msec-body"><div class="mgrid">
+        <div class="mcard fz" onclick="openFzAssign()"><div class="ico"><i class="ti ti-clipboard-check"></i></div><div class="ttl">Faldar Assignment</div><div class="dsc">Zone + kaam + labour</div></div>
+        <div class="mcard fz" onclick="openFzShift()"><div class="ico"><i class="ti ti-arrows-exchange"></i></div><div class="ttl">Faldar Shifting</div><div class="dsc">Chhote bag se bade bag me</div></div>
+        <div class="mcard fz" onclick="openFzWater()"><div class="ico"><i class="ti ti-droplet-half"></i></div><div class="ttl">Pani / Spray</div><div class="dsc">Shower, bed, spray, drench</div></div>
+        <div class="mcard fz" onclick="openFzLoad()"><div class="ico"><i class="ti ti-truck-loading"></i></div><div class="ttl">Faldar Loading</div><div class="dsc">Gaadi me paudhe</div></div>
+        <div class="mcard fz" onclick="openFzReport()" style="grid-column:1/-1;"><div class="ico"><i class="ti ti-report-analytics"></i></div><div class="ttl">Faldar Report</div><div class="dsc">Zone, kaam, paudha, labour — sab ek jagah</div></div>
+      </div></div></div>
     </div>
 
     <!-- Manager Menu -->
@@ -613,6 +646,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div class="ico"><i class="ti ti-coin"></i></div><div class="ttl">Payment &amp; Delivery</div>
           <div class="dsc">Payment add / delivered</div>
         </div>
+      </div></div></div>
+      <div class="msec-acc" data-open="0"><div class="msec-head" onclick="togSec(this)"><div class="mh-left"><i class="ti ti-trees"></i>Faldar / Forestry / Phool</div><div class="mh-right"><span class="msec-count">5</span><i class="ti ti-chevron-down msec-chev"></i></div></div><div class="msec-body"><div class="mgrid">
+        <div class="mcard fz" onclick="openFzAssign()"><div class="ico"><i class="ti ti-clipboard-check"></i></div><div class="ttl">Faldar Assignment</div><div class="dsc">Zone + kaam + labour</div></div>
+        <div class="mcard fz" onclick="openFzShift()"><div class="ico"><i class="ti ti-arrows-exchange"></i></div><div class="ttl">Faldar Shifting</div><div class="dsc">Chhote bag se bade bag me</div></div>
+        <div class="mcard fz" onclick="openFzWater()"><div class="ico"><i class="ti ti-droplet-half"></i></div><div class="ttl">Pani / Spray</div><div class="dsc">Shower, bed, spray, drench</div></div>
+        <div class="mcard fz" onclick="openFzLoad()"><div class="ico"><i class="ti ti-truck-loading"></i></div><div class="ttl">Faldar Loading</div><div class="dsc">Gaadi me paudhe</div></div>
+        <div class="mcard fz" onclick="openFzReport()" style="grid-column:1/-1;"><div class="ico"><i class="ti ti-report-analytics"></i></div><div class="ttl">Faldar Report</div><div class="dsc">Zone, kaam, paudha, labour — sab ek jagah</div></div>
       </div></div></div>
     </div>
 
@@ -679,6 +719,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
           <div class="ico"><i class="ti ti-user-hard-hat"></i></div><div class="ttl">Labour Master</div>
           <div class="dsc">Labour list manage karo</div>
         </div>
+      </div></div></div>
+      <div class="msec-acc" data-open="0"><div class="msec-head" onclick="togSec(this)"><div class="mh-left"><i class="ti ti-trees"></i>Faldar / Forestry / Phool</div><div class="mh-right"><span class="msec-count">5</span><i class="ti ti-chevron-down msec-chev"></i></div></div><div class="msec-body"><div class="mgrid">
+        <div class="mcard fz" onclick="openFzAssign()"><div class="ico"><i class="ti ti-clipboard-check"></i></div><div class="ttl">Faldar Assignment</div><div class="dsc">Zone + kaam + labour</div></div>
+        <div class="mcard fz" onclick="openFzShift()"><div class="ico"><i class="ti ti-arrows-exchange"></i></div><div class="ttl">Faldar Shifting</div><div class="dsc">Chhote bag se bade bag me</div></div>
+        <div class="mcard fz" onclick="openFzWater()"><div class="ico"><i class="ti ti-droplet-half"></i></div><div class="ttl">Pani / Spray</div><div class="dsc">Shower, bed, spray, drench</div></div>
+        <div class="mcard fz" onclick="openFzLoad()"><div class="ico"><i class="ti ti-truck-loading"></i></div><div class="ttl">Faldar Loading</div><div class="dsc">Gaadi me paudhe</div></div>
+        <div class="mcard fz" onclick="openFzReport()" style="grid-column:1/-1;"><div class="ico"><i class="ti ti-report-analytics"></i></div><div class="ttl">Faldar Report</div><div class="dsc">Zone, kaam, paudha, labour — sab ek jagah</div></div>
       </div></div></div>
     </div>
 
@@ -1126,6 +1173,203 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
     <div id="labourReportContent"></div>
   </div>
 </div>
+
+
+<!-- ════════ FALDAR / FORESTRY / PHOOL MODULE (sirf Bafalgaon) ════════ -->
+<!-- FZ: MORNING ASSIGNMENT -->
+<div class="screen" id="fzAssignScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:#c77a2e;">🌳</div>
+      <h1>Faldar Assignment <span>फलदार / फॉरेस्ट्री / फूल — सुबह का काम</span></h1></div>
+    <div class="sbar"><span class="sbadge supervisor" id="fzAsSupB">👷</span>
+      <button class="backbtn" onclick="goMenu()">← Menu</button></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle orange">Basic Jaankari</div>
+      <div class="g2">
+        <div><label>📅 Date</label><input type="date" id="fzAsDate"></div>
+        <div><label>👷 Supervisor</label><input type="text" id="fzAsSup" readonly style="background:#e8f5ee;font-weight:700;color:var(--gm);"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle orange">Zone + Kaam + Labour</div>
+      <div id="fzAsCon"></div>
+      <button class="abtn ao" onclick="fzAddAssignBlock()">➕ Aur Kaam Jodo</button>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="ctitle orange">📝 Remarks</div>
+      <textarea id="fzAsRem" rows="2" placeholder="Koi khaas baat..."></textarea>
+    </div>
+    <button class="subbtn fz-sub" id="fzAsBtn" onclick="fzSubmitAssign()">📋 Assignment Save Karo</button>
+  </div>
+</div>
+
+<!-- FZ: SHIFTING (chhote bag se bade bag me) -->
+<div class="screen" id="fzShiftScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:#c77a2e;">🔄</div>
+      <h1>Faldar Shifting <span>छोटे बैग से बड़े बैग में (जैसे 5x6 → 9x10)</span></h1></div>
+    <div class="sbar"><span class="sbadge supervisor" id="fzShSupB">👷</span>
+      <button class="backbtn" onclick="goMenu()">← Menu</button></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle orange">Basic Jaankari</div>
+      <div class="g2">
+        <div><label>📅 Date</label><input type="date" id="fzShDate"></div>
+        <div><label>👷 Supervisor</label><input type="text" id="fzShSup" readonly style="background:#e8f5ee;font-weight:700;color:var(--gm);"></div>
+      </div>
+      <div class="fr"><label>📍 Zone (kahan shifting hui)</label><select id="fzShZone"></select></div>
+    </div>
+    <div class="card">
+      <div class="ctitle orange">🌳 Paudhe + Labour</div>
+      <div id="fzShLines"></div>
+      <button class="abtn ao" onclick="fzAddShiftLine()">➕ Aur Paudha Jodo</button>
+    </div>
+    <div class="sumcard">
+      <div class="sumtitle">📊 Live Summary</div>
+      <div class="sg3">
+        <div class="si"><span class="val" id="fzShSmP">0</span><div class="lbl">Paudhe (lines)</div></div>
+        <div class="si"><span class="val" id="fzShSmL">0</span><div class="lbl">Labour</div></div>
+        <div class="si"><span class="val" id="fzShSmQ">0</span><div class="lbl">Kul Bag</div></div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="ctitle orange">📝 Remarks</div>
+      <textarea id="fzShRem" rows="2" placeholder="Koi khaas baat..."></textarea>
+    </div>
+    <button class="subbtn fz-sub" id="fzShBtn" onclick="fzSubmitShift()">🔄 Shifting Save Karo</button>
+  </div>
+</div>
+<datalist id="fzBagList"><option value="4x5"><option value="5x6"><option value="6x8"><option value="8x10"><option value="9x10"><option value="10x12"><option value="12x14"></datalist>
+
+<!-- FZ: WATERING & SPRAYING -->
+<div class="screen" id="fzWaterScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:#c77a2e;">💧</div>
+      <h1>Faldar Pani / Spray <span>शावर, बेड, स्प्रे, ड्रिंचिंग</span></h1></div>
+    <div class="sbar"><span class="sbadge supervisor" id="fzWtSupB">👷</span>
+      <button class="backbtn" onclick="goMenu()">← Menu</button></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle blue">Basic Jaankari</div>
+      <div class="g2">
+        <div><label>📅 Date</label><input type="date" id="fzWtDate"></div>
+        <div><label>👷 Supervisor</label><input type="text" id="fzWtSup" readonly style="background:#e8f5ee;font-weight:700;color:var(--gm);"></div>
+      </div>
+      <div class="fr"><label>📍 Zone</label><select id="fzWtZone"></select></div>
+    </div>
+    <div class="card">
+      <div class="ctitle blue">Kaam Ka Type</div>
+      <div class="fz-kt" id="fzWtKT">
+        <button type="button" class="fz-ktb" data-k="शावर से पानी" onclick="fzSetWK(this)">🚿 शावर से पानी</button>
+        <button type="button" class="fz-ktb" data-k="बेड से पानी" onclick="fzSetWK(this)">🛏️ बेड से पानी</button>
+        <button type="button" class="fz-ktb" data-k="स्प्रे" onclick="fzSetWK(this)">🌿 स्प्रे</button>
+        <button type="button" class="fz-ktb" data-k="ड्रिंचिंग" onclick="fzSetWK(this)">💧 ड्रिंचिंग</button>
+      </div>
+      <input type="hidden" id="fzWtKaam" value="">
+    </div>
+    <div class="card">
+      <div class="ctitle blue">🌳 Kin Paudhon Par</div>
+      <label style="display:flex;align-items:center;gap:8px;padding:10px;border:2px solid var(--g2);border-radius:8px;margin-bottom:10px;cursor:pointer;font-weight:600;background:var(--gp);">
+        <input type="checkbox" id="fzWtAll" onchange="fzToggleWAll()" style="width:18px;height:18px;">
+        📍 Poore Zone me kiya (paudha chunna zaroori nahi)
+      </label>
+      <div id="fzWtLineWrap">
+        <div id="fzWtLines"></div>
+        <button class="abtn ac" onclick="fzAddPlantLine('fzWtLines',false)">➕ Aur Paudha Jodo</button>
+      </div>
+    </div>
+    <div class="card" id="fzDwCard" style="display:none;">
+      <div class="ctitle blue">🧪 Dawai / Khaad</div>
+      <div id="fzDwCon"></div>
+      <button class="abtn ac" onclick="fzAddDawai()">➕ Ek Aur Dawai Jodo</button>
+    </div>
+    <div class="card">
+      <div class="ctitle blue">👷 Labour</div>
+      <div id="fzWtLab"></div>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="ctitle blue">📝 Remarks</div>
+      <textarea id="fzWtRem" rows="2" placeholder="Koi khaas baat..."></textarea>
+    </div>
+    <button class="subbtn" id="fzWtBtn" onclick="fzSubmitWater()" style="background:linear-gradient(135deg,var(--bl),var(--bm));">✅ Entry Save Karo</button>
+  </div>
+</div>
+
+<!-- FZ: LOADING -->
+<div class="screen" id="fzLoadScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:#c77a2e;">🚚</div>
+      <h1>Faldar Loading <span>गाड़ी में पौधे लोड</span></h1></div>
+    <div class="sbar"><span class="sbadge supervisor" id="fzLdSupB">👷</span>
+      <button class="backbtn" onclick="goMenu()">← Menu</button></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle orange">Basic Jaankari</div>
+      <div class="g2">
+        <div><label>📅 Date</label><input type="date" id="fzLdDate"></div>
+        <div><label>👷 Supervisor</label><input type="text" id="fzLdSup" readonly style="background:#e8f5ee;font-weight:700;color:var(--gm);"></div>
+      </div>
+      <div class="fr"><label>📍 Kis Zone Se</label><select id="fzLdZone"></select></div>
+      <div class="fr"><label>🧑‍🌾 Party / Order Naam</label><input type="text" id="fzLdParty" placeholder="Kiska order hai..."></div>
+      <div class="g2">
+        <div><label>🚙 Gaadi No</label><input type="text" id="fzLdGaadi" placeholder="MP 10 ..."></div>
+        <div><label>👨 Driver</label><input type="text" id="fzLdDriver" placeholder="Driver naam"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ctitle orange">🌳 Paudhe (Plant Lines)</div>
+      <div id="fzLdLines"></div>
+      <button class="abtn ao" onclick="fzAddPlantLine('fzLdLines',true)">➕ Aur Paudha Jodo</button>
+    </div>
+    <div class="card">
+      <div class="ctitle orange">👷 Labour</div>
+      <div id="fzLdLab"></div>
+    </div>
+    <div class="card" style="margin-top:10px;">
+      <div class="ctitle orange">📝 Remarks</div>
+      <textarea id="fzLdRem" rows="2" placeholder="Koi khaas baat..."></textarea>
+    </div>
+    <button class="subbtn fz-sub" id="fzLdBtn" onclick="fzSubmitLoad()">🚚 Loading Save Karo</button>
+  </div>
+</div>
+
+<!-- FZ: REPORT -->
+<div class="screen" id="fzReportScreen">
+  <div class="hdr">
+    <div class="htop"><div class="hico" style="background:#c77a2e;">📊</div>
+      <h1>Faldar Report <span>फलदार / फॉरेस्ट्री / फूल</span></h1></div>
+    <div class="sbar">
+      <button class="backbtn" onclick="goMenu()">← Menu</button></div>
+  </div>
+  <div class="wrap">
+    <div class="card">
+      <div class="ctitle orange">🔍 Filters</div>
+      <div class="g2">
+        <div><label>📅 From Date</label><input type="date" id="fzRFrom"></div>
+        <div><label>📅 To Date</label><input type="date" id="fzRTo"></div>
+      </div>
+      <div class="g2">
+        <div><label>📂 Kaam</label>
+          <select id="fzRMod">
+            <option value="">-- Sab --</option>
+            <option value="assign">Morning Assignment</option>
+            <option value="shift">Shifting</option>
+            <option value="water">Pani / Spray</option>
+            <option value="load">Loading</option>
+          </select></div>
+        <div><label>📍 Zone</label><select id="fzRZone"></select></div>
+      </div>
+      <button onclick="fzLoadReport()" style="width:100%;padding:11px;background:linear-gradient(135deg,#c77a2e,#9a5316);color:white;border:none;border-radius:var(--rs);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px;">🔍 Report Dekho</button>
+    </div>
+    <div id="fzReportContent"></div>
+  </div>
+</div>
+<datalist id="fzPlantList"></datalist>
 
 <!-- SUCCESS -->
 <div class="sucscreen" id="sucScreen">
@@ -1716,7 +1960,7 @@ function formatDate(dateStr) {
 }
 // ═══ AUTO-UPDATE: naya version aate hi app khud refresh ho jayega ═══
 // Deploy karte waqt ye number badal jata hai -> purana app khud naya version le lega
-const APP_VERSION = '20260916-0818b';
+const APP_VERSION = '20260927-2200b';
 (function autoUpdateCheck(){
   // Loop guard: abhi abhi update hua hai to dobara check mat karo
   if(location.search.indexOf('v=') !== -1) return;
@@ -5881,6 +6125,559 @@ function loadDispatchReport(){
       con.innerHTML = '<div class="rep-card" style="text-align:center;color:var(--rd);padding:20px;">⚠️ Data load nahi hua. Internet check karo.</div>';
     });
 }
+
+
+// ════════════════════════════════════════════════════════════════
+// FALDAR / FORESTRY / PHOOL / ORNAMENTAL MODULE (sirf Bafalgaon)
+// Sabji wale module se bilkul alag — alag zone, alag kaam, alag sheets
+// ════════════════════════════════════════════════════════════════
+const FZ_ZONES = ['कटिंग झोन','देवेन्द्र भैया वाला खेत','सिन्धु नेट हाउस','तालाब नेट हाउस','पुरानी ऑफिस के पास','मदर के पास'];
+const FZ_WORK = ['कटिंग लगाने पर','लोडिंग कार्य','शिफ्टिंग कार्य','आर्डर निकलने पर','चाला पल्टी पर','पौधा जमाने पर','निंदाई पर','स्प्रे पर','ड्रिंचिंग पर','कटिंग करने पर','सीड सोइंग पर','चंदन में होस्ट लगाने पर','चंदन में होस्ट काटने पर','पाइपलाइन रिपेयरिंग कार्य','ग्राफ्टिंग करने पर','साफ-सफाई + कचरा फेंकने पर','बेट में पत्ती जमाने पर','शावर से पानी पर','बेड से पानी पर','अन्य कार्य पर'];
+const FZ_CATS = ['फलदार','फॉरेस्ट्री','फूल वाले','ऑर्नामेंटल','अन्य'];
+const FZ_SHEETS = {
+  assign: {name:'F-Morning Assignment', cols:['Date','Supervisor','Zone','Kaam','Labour Names','Total Labour','Remarks']},
+  shift:  {name:'F-Bag Shifting',       cols:['Date','Supervisor','Zone','Category','Plant','Purana Bag','Naya Bag','Labour Name','Qty','Remarks']},
+  water:  {name:'F-Watering Spraying',  cols:['Date','Supervisor','Zone','Kaam','Category','Plant','Dawai','Labour Names','Total Labour','Remarks']},
+  load:   {name:'F-Loading',            cols:['Date','Supervisor','Zone','Party','Gaadi No','Driver','Category','Plant','Size','Qty','Labour Names','Total Labour','Remarks']}
+};
+let FZ_PLANTS = {};   // plant -> category (F-Plant Master se)
+let FZL = {};         // picker key -> [labour names]
+let fzBlkCnt = 0, fzPlCnt = 0, fzDwCnt = 0;
+
+function fzEsc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fzOpts(arr, ph){ return '<option value="">-- '+ph+' --</option>' + arr.map(function(x){ return '<option>'+x+'</option>'; }).join(''); }
+function fzFillZone(id, ph){ var s=document.getElementById(id); if(s) s.innerHTML = fzOpts(FZ_ZONES, ph||'Zone Chunein'); }
+
+// Plant Master (sheet "F-Plant Master": A=Category, B=Plant) — save karte hi naye paudhe apne aap judte hain
+function fzLoadPlants(){
+  fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&headers=1&sheet='+encodeURIComponent('F-Plant Master')+'&t='+Date.now())
+    .then(function(r){ return r.text(); })
+    .then(function(txt){
+      var j; try{ j = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]); }catch(e){ return; }
+      if(!j || j.status==='error' || !j.table) return;
+      var lbl = (j.table.cols[0] && j.table.cols[0].label || '').trim();
+      if(lbl && lbl!=='Category') return;   // galat sheet aa gayi to kuch mat karo
+      FZ_PLANTS = {};
+      j.table.rows.forEach(function(r){
+        var cat = r.c[0] && r.c[0].v ? String(r.c[0].v).trim() : '';
+        var pl  = r.c[1] && r.c[1].v ? String(r.c[1].v).trim() : '';
+        if(pl && cat!=='Category') FZ_PLANTS[pl] = cat;
+      });
+      fzBuildPlantList();
+    }).catch(function(){});
+}
+function fzBuildPlantList(){
+  var dl = document.getElementById('fzPlantList'); if(!dl) return;
+  dl.innerHTML = Object.keys(FZ_PLANTS).sort().map(function(p){ return '<option value="'+fzEsc(p)+'">'; }).join('');
+}
+
+// ── Labour picker (naam type karo / list se chuno -> + Jodo) ──
+function fzPickerHTML(key){
+  return '<div class="fz-pick-row">'+
+    '<input type="text" id="fzpi-'+key+'" list="labourNames" placeholder="🔍 Labour naam..." onkeydown="if(event.keyCode===13){fzAddLab(\''+key+'\');}">'+
+    '<button type="button" onclick="fzAddLab(\''+key+'\')">+ Jodo</button></div>'+
+    '<div class="tags-wrap" id="fzpt-'+key+'"></div>';
+}
+function fzMountPicker(boxId, key){
+  FZL[key] = [];
+  var b = document.getElementById(boxId); if(b) b.innerHTML = fzPickerHTML(key);
+}
+function fzAddLab(key){
+  var inp = document.getElementById('fzpi-'+key); if(!inp) return;
+  var v = inp.value.trim(); if(!v) return;
+  if(!FZL[key]) FZL[key] = [];
+  if(FZL[key].indexOf(v)!==-1){ toast('⚠️ Yeh labour pehle se add hai!','error'); return; }
+  FZL[key].push(v); inp.value=''; fzRenderTags(key);
+}
+function fzRemLab(key, i){ if(FZL[key]){ FZL[key].splice(i,1); fzRenderTags(key); } }
+function fzRenderTags(key){
+  var t = document.getElementById('fzpt-'+key); if(!t) return;
+  t.innerHTML = (FZL[key]||[]).map(function(n,i){
+    return '<span class="labour-tag">'+fzEsc(n)+'<button type="button" onclick="fzRemLab(\''+key+'\','+i+')">×</button></span>';
+  }).join('') || '<span style="color:var(--g5);font-size:12px;padding:4px;">Koi labour nahi jode</span>';
+}
+
+// ── Plant line (Category + Paudha + Size + Qty) ──
+function fzAddPlantLine(conId, withQty){
+  fzPlCnt++; var n = fzPlCnt;
+  var con = document.getElementById(conId); if(!con) return;
+  var d = document.createElement('div');
+  d.className = 'fz-pl'; d.id = 'fzpl-'+n; d.dataset.n = n;
+  var num = con.querySelectorAll('.fz-pl').length + 1;
+  d.innerHTML = '<div class="fz-pl-n">Paudha '+num+'</div>'+
+    (num>1 ? '<button type="button" class="fz-x" onclick="document.getElementById(\'fzpl-'+n+'\').remove()">✕</button>' : '')+
+    '<div class="g2">'+
+      '<div><label>📂 Category</label><select id="fzpc-'+n+'">'+fzOpts(FZ_CATS,'Chunein')+'</select></div>'+
+      '<div><label>🌳 Paudha</label><input type="text" id="fzpp-'+n+'" list="fzPlantList" placeholder="🔍 Aam, Sagwan, Gulab..." onchange="fzAutoCat('+n+')"></div>'+
+    '</div>'+
+    (withQty ?
+      '<div class="g2">'+
+        '<div><label>📏 Size / Bag</label><input type="text" id="fzps-'+n+'" placeholder="जैसे 6x8, 1 फीट"></div>'+
+        '<div><label>🔢 Kitne Paudhe</label><input type="number" id="fzpq-'+n+'" placeholder="0" min="0" step="1"></div>'+
+      '</div>' : '');
+  con.appendChild(d);
+}
+function fzAutoCat(n){
+  var p = (document.getElementById('fzpp-'+n)||{}).value || '';
+  var c = document.getElementById('fzpc-'+n);
+  if(c && !c.value && FZ_PLANTS[p.trim()]) c.value = FZ_PLANTS[p.trim()];
+}
+// withQty=true -> qty zaroori; returns {lines} ya {err}
+function fzCollectLines(conId, withQty){
+  var out = [], err = '';
+  document.querySelectorAll('#'+conId+' .fz-pl').forEach(function(el, i){
+    if(err) return;
+    var n = el.dataset.n;
+    var cat = (document.getElementById('fzpc-'+n)||{}).value || '';
+    var pl  = ((document.getElementById('fzpp-'+n)||{}).value || '').trim();
+    var sz  = ((document.getElementById('fzps-'+n)||{}).value || '').trim();
+    var q   = parseFloat((document.getElementById('fzpq-'+n)||{}).value) || 0;
+    if(!pl && !cat && !q && !sz) return;              // bilkul khaali line -> chhod do
+    if(!pl){ err = 'Paudha '+(i+1)+': paudhe ka naam bharo'; return; }
+    if(!cat){ err = 'Paudha '+(i+1)+' ('+pl+'): category chuno'; return; }
+    if(withQty && q<=0){ err = 'Paudha '+(i+1)+' ('+pl+'): kitne paudhe — bharo'; return; }
+    out.push({category:cat, plant:pl, size:sz, qty:q});
+  });
+  return err ? {err:err} : {lines:out};
+}
+
+function fzSetSup(){
+  var nm = curUser ? curUser.name : '';
+  ['fzAsSup','fzShSup','fzWtSup','fzLdSup'].forEach(function(id){ var e=document.getElementById(id); if(e) e.value=nm; });
+  ['fzAsSupB','fzShSupB','fzWtSupB','fzLdSupB'].forEach(function(id){ var e=document.getElementById(id); if(e) e.textContent='👷 '+nm; });
+}
+function fzToday(id){ var e=document.getElementById(id); if(e && !e.value) e.value = localISO(new Date()); }
+
+function fzPost(payload, btn, okMsg, resetFn, btnLabel){
+  btn.disabled = true; btn.innerHTML = '⏳ Save Ho Raha Hai...';
+  fetch(API,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)})
+    .then(function(){ toast(okMsg); resetFn(); setTimeout(fzLoadPlants, 2500); })
+    .catch(function(){ toast('⚠️ Error! Internet check karo.','error'); })
+    .then(function(){ btn.disabled = false; btn.innerHTML = btnLabel; });
+}
+
+// ═══ 1. MORNING ASSIGNMENT ═══
+function openFzAssign(){
+  fzSetSup(); fzToday('fzAsDate');
+  if(!document.querySelector('#fzAsCon .fz-blk')){ fzBlkCnt=0; fzAddAssignBlock(); }
+  show('fzAssignScreen');
+}
+function fzAddAssignBlock(){
+  fzBlkCnt++; var b = fzBlkCnt;
+  var d = document.createElement('div');
+  d.className = 'fz-blk'; d.id = 'fzblk-'+b; d.dataset.b = b;
+  d.innerHTML = '<div class="fz-bh"><span>🔨 Kaam '+b+'</span>'+
+    (b>1 ? '<button type="button" class="rmbtn" onclick="fzRemBlock('+b+')">✕</button>' : '')+'</div>'+
+    '<div class="fz-bb">'+
+      '<div class="g2">'+
+        '<div><label>📍 Zone</label><select id="fzbz-'+b+'">'+fzOpts(FZ_ZONES,'Zone')+'</select></div>'+
+        '<div><label>🔨 Kaam Ka Type</label><select id="fzbw-'+b+'">'+fzOpts(FZ_WORK,'Kaam')+'</select></div>'+
+      '</div>'+
+      '<label>👷 Labour</label><div id="fzbl-'+b+'"></div>'+
+    '</div>';
+  document.getElementById('fzAsCon').appendChild(d);
+  fzMountPicker('fzbl-'+b, 'as'+b);
+  fzRenderTags('as'+b);
+}
+function fzRemBlock(b){ var e=document.getElementById('fzblk-'+b); if(e) e.remove(); delete FZL['as'+b]; }
+function fzResetAssign(){
+  document.getElementById('fzAsCon').innerHTML=''; document.getElementById('fzAsRem').value='';
+  Object.keys(FZL).forEach(function(k){ if(k.indexOf('as')===0) delete FZL[k]; });
+  fzBlkCnt=0; fzAddAssignBlock();
+}
+function fzSubmitAssign(){
+  var date = document.getElementById('fzAsDate').value;
+  var sup = document.getElementById('fzAsSup').value;
+  if(!date || !sup){ toast('❗ Date zaroori hai!','error'); return; }
+  var items = [], err = '';
+  document.querySelectorAll('#fzAsCon .fz-blk').forEach(function(el, i){
+    if(err) return;
+    var b = el.dataset.b;
+    var z = document.getElementById('fzbz-'+b).value, w = document.getElementById('fzbw-'+b).value;
+    var labs = FZL['as'+b] || [];
+    if(!z && !w && !labs.length) return;
+    if(!z){ err='Kaam '+(i+1)+': Zone chuno'; return; }
+    if(!w){ err='Kaam '+(i+1)+': Kaam ka type chuno'; return; }
+    if(!labs.length){ err='Kaam '+(i+1)+': kam se kam ek labour jodo'; return; }
+    items.push({zone:z, kaam:w, labours:labs.slice()});
+  });
+  if(err){ toast('❗ '+err,'error'); return; }
+  if(!items.length){ toast('❗ Kam se kam ek kaam bharo!','error'); return; }
+  fzPost({module:'fzAssign', date:date, supervisor:sup, remarks:document.getElementById('fzAsRem').value, items:items},
+    document.getElementById('fzAsBtn'), '✅ Faldar assignment save ho gayi!', fzResetAssign, '📋 Assignment Save Karo');
+}
+
+// ═══ 2. SHIFTING — chhote bag se bade bag me (har labour ke bag alag) ═══
+let FZSH = {};   // line n -> [{name, qty}]
+function openFzShift(){
+  fzSetSup(); fzToday('fzShDate');
+  if(!document.getElementById('fzShZone').options.length) fzFillZone('fzShZone','Zone');
+  if(!document.querySelector('#fzShLines .fz-pl')) fzAddShiftLine();
+  fzShSum();
+  show('fzShiftScreen');
+}
+function fzAddShiftLine(){
+  fzPlCnt++; var n = fzPlCnt;
+  FZSH[n] = [];
+  var con = document.getElementById('fzShLines');
+  var num = con.querySelectorAll('.fz-pl').length + 1;
+  var d = document.createElement('div');
+  d.className = 'fz-pl'; d.id = 'fzpl-'+n; d.dataset.n = n;
+  d.innerHTML = '<div class="fz-pl-n">Paudha '+num+'</div>'+
+    (num>1 ? '<button type="button" class="fz-x" onclick="fzRemShiftLine('+n+')">✕</button>' : '')+
+    '<div class="g2">'+
+      '<div><label>📂 Category</label><select id="fzpc-'+n+'">'+fzOpts(FZ_CATS,'Chunein')+'</select></div>'+
+      '<div><label>🌳 Paudha</label><input type="text" id="fzpp-'+n+'" list="fzPlantList" placeholder="🔍 Aam, Sagwan, Gulab..." onchange="fzAutoCat('+n+')"></div>'+
+    '</div>'+
+    '<div class="g2">'+
+      '<div><label>👜 Purana Bag</label><input type="text" id="fzbf-'+n+'" list="fzBagList" value="5x6" placeholder="5x6"></div>'+
+      '<div><label>👜 Naya Bag</label><input type="text" id="fzbt-'+n+'" list="fzBagList" value="9x10" placeholder="9x10"></div>'+
+    '</div>'+
+    '<label style="margin-top:4px;">👷 Labour + Kitne Bag</label>'+
+    '<div class="fz-pick-row">'+
+      '<input type="text" id="fzsln-'+n+'" list="labourNames" placeholder="🔍 Labour naam...">'+
+      '<input type="number" id="fzslq-'+n+'" placeholder="Bag" min="0" step="1" style="flex:0 0 80px;" onkeydown="if(event.keyCode===13){fzAddShLab('+n+');}">'+
+      '<button type="button" onclick="fzAddShLab('+n+')">+ Jodo</button></div>'+
+    '<div class="tags-wrap" id="fzslt-'+n+'"></div>'+
+    '<div style="text-align:right;font-size:13px;font-weight:800;color:#9a5316;">Total: <span id="fzsltot-'+n+'">0</span> bag</div>';
+  con.appendChild(d);
+  fzRenderShLab(n);
+  fzShSum();
+}
+function fzRemShiftLine(n){ var e=document.getElementById('fzpl-'+n); if(e) e.remove(); delete FZSH[n]; fzShSum(); }
+function fzAddShLab(n){
+  var ni = document.getElementById('fzsln-'+n), qi = document.getElementById('fzslq-'+n);
+  var nm = (ni.value||'').trim(), q = parseFloat(qi.value)||0;
+  if(!nm){ toast('❗ Labour ka naam bharo','error'); ni.focus(); return; }
+  if(q<=0){ toast('❗ '+nm+' ne kitne bag shift kiye — bharo','error'); qi.focus(); return; }
+  if(!FZSH[n]) FZSH[n] = [];
+  if(FZSH[n].some(function(x){ return x.name===nm; })){ toast('⚠️ '+nm+' is paudhe me pehle se hai!','error'); return; }
+  FZSH[n].push({name:nm, qty:q});
+  ni.value=''; qi.value=''; ni.focus();
+  fzRenderShLab(n); fzShSum();
+}
+function fzRemShLab(n, i){ if(FZSH[n]){ FZSH[n].splice(i,1); fzRenderShLab(n); fzShSum(); } }
+function fzRenderShLab(n){
+  var t = document.getElementById('fzslt-'+n); if(!t) return;
+  var arr = FZSH[n]||[];
+  t.innerHTML = arr.map(function(x,i){
+    return '<span class="labour-tag">'+fzEsc(x.name)+' — <b>'+x.qty+'</b><button type="button" onclick="fzRemShLab('+n+','+i+')">×</button></span>';
+  }).join('') || '<span style="color:var(--g5);font-size:12px;padding:4px;">Koi labour nahi jode</span>';
+  var tot = arr.reduce(function(s,x){ return s+x.qty; },0);
+  var te = document.getElementById('fzsltot-'+n); if(te) te.textContent = tot.toLocaleString('en-IN');
+}
+function fzShSum(){
+  var lines = document.querySelectorAll('#fzShLines .fz-pl'), labs = {}, q = 0;
+  lines.forEach(function(el){ (FZSH[el.dataset.n]||[]).forEach(function(x){ labs[x.name]=1; q+=x.qty; }); });
+  var s = function(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; };
+  s('fzShSmP', lines.length); s('fzShSmL', Object.keys(labs).length); s('fzShSmQ', q.toLocaleString('en-IN'));
+}
+function fzResetShift(){
+  document.getElementById('fzShLines').innerHTML=''; document.getElementById('fzShRem').value='';
+  FZSH = {}; fzAddShiftLine();
+}
+function fzSubmitShift(){
+  var date = document.getElementById('fzShDate').value, sup = document.getElementById('fzShSup').value;
+  var zone = document.getElementById('fzShZone').value;
+  if(!date || !zone){ toast('❗ Date aur Zone zaroori hai!','error'); return; }
+  var lines = [], err = '';
+  document.querySelectorAll('#fzShLines .fz-pl').forEach(function(el, i){
+    if(err) return;
+    var n = el.dataset.n, tag = 'Paudha '+(i+1);
+    var cat = document.getElementById('fzpc-'+n).value;
+    var pl = (document.getElementById('fzpp-'+n).value||'').trim();
+    var bf = (document.getElementById('fzbf-'+n).value||'').trim();
+    var bt = (document.getElementById('fzbt-'+n).value||'').trim();
+    var labs = FZSH[n]||[];
+    // labour box me naam/bag type karke + Jodo dabana bhool gaye?
+    var pendN = (document.getElementById('fzsln-'+n).value||'').trim();
+    if(!pl && !cat && !labs.length && !pendN) return;          // khaali line chhod do
+    if(!pl){ err = tag+': paudhe ka naam bharo'; return; }
+    tag += ' ('+pl+')';
+    if(!cat){ err = tag+': category chuno'; return; }
+    if(!bf || !bt){ err = tag+': Purana aur Naya bag dono bharo'; return; }
+    if(bf.toLowerCase()===bt.toLowerCase()){ err = tag+': Purana aur Naya bag same nahi ho sakta'; return; }
+    if(pendN){ err = tag+': "'+pendN+'" ke liye + Jodo dabao'; return; }
+    if(!labs.length){ err = tag+': kam se kam ek labour aur uske bag jodo'; return; }
+    lines.push({category:cat, plant:pl, fromBag:bf, toBag:bt, labours:labs.slice()});
+  });
+  if(err){ toast('❗ '+err,'error'); return; }
+  if(!lines.length){ toast('❗ Kam se kam ek paudha bharo!','error'); return; }
+  fzPost({module:'fzShift', date:date, supervisor:sup, zone:zone, lines:lines, remarks:document.getElementById('fzShRem').value},
+    document.getElementById('fzShBtn'), '✅ Faldar shifting save ho gayi!', fzResetShift, '🔄 Shifting Save Karo');
+}
+
+// ═══ 3. WATERING & SPRAYING ═══
+function openFzWater(){
+  fzSetSup(); fzToday('fzWtDate');
+  if(!document.getElementById('fzWtZone').options.length) fzFillZone('fzWtZone','Zone');
+  if(!document.querySelector('#fzWtLines .fz-pl')) fzAddPlantLine('fzWtLines', false);
+  if(!document.querySelector('#fzDwCon .fz-dw')) fzAddDawai();
+  if(!FZL.wt) fzMountPicker('fzWtLab','wt');
+  fzRenderTags('wt');
+  if(typeof loadChemList==='function') loadChemList();
+  show('fzWaterScreen');
+}
+function fzSetWK(btn){
+  document.querySelectorAll('#fzWtKT .fz-ktb').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  var k = btn.getAttribute('data-k');
+  document.getElementById('fzWtKaam').value = k;
+  document.getElementById('fzDwCard').style.display = (k==='स्प्रे' || k==='ड्रिंचिंग') ? 'block' : 'none';
+}
+function fzToggleWAll(){
+  document.getElementById('fzWtLineWrap').style.display = document.getElementById('fzWtAll').checked ? 'none' : 'block';
+}
+function fzAddDawai(){
+  fzDwCnt++; var n = fzDwCnt;
+  var con = document.getElementById('fzDwCon');
+  var first = !con.querySelector('.fz-dw');
+  var d = document.createElement('div');
+  d.className = 'fz-dw'; d.id = 'fzdw-'+n; d.dataset.n = n;
+  if(first) d.style.borderTop = 'none';
+  d.innerHTML = (first ? '' : '<button type="button" class="fz-x" style="top:4px;right:0;" onclick="document.getElementById(\'fzdw-'+n+'\').remove()">✕</button>')+
+    '<div class="fr"><label>🧪 Dawai / Khaad</label><input type="text" id="fzdn-'+n+'" list="chemList" placeholder="🔍 Calcium, 00:00:50..."></div>'+
+    '<div class="g2">'+
+      '<div><label>📏 Matra</label><input type="number" id="fzdq-'+n+'" placeholder="0" step="0.1"></div>'+
+      '<div><label>📐 Unit</label><select id="fzdu-'+n+'"><option>gm</option><option>ML</option><option>gm/pump</option><option>ml/pump</option><option>gm/litre</option><option>ml/litre</option><option>kg</option><option>litre</option></select></div>'+
+    '</div>';
+  con.appendChild(d);
+}
+function fzResetWater(){
+  document.getElementById('fzWtLines').innerHTML=''; document.getElementById('fzDwCon').innerHTML='';
+  document.getElementById('fzWtRem').value=''; document.getElementById('fzWtAll').checked=false; fzToggleWAll();
+  document.getElementById('fzWtKaam').value=''; document.querySelectorAll('#fzWtKT .fz-ktb').forEach(function(b){ b.classList.remove('on'); });
+  document.getElementById('fzDwCard').style.display='none';
+  fzAddPlantLine('fzWtLines', false); fzAddDawai(); fzMountPicker('fzWtLab','wt'); fzRenderTags('wt');
+}
+function fzSubmitWater(){
+  var date = document.getElementById('fzWtDate').value, sup = document.getElementById('fzWtSup').value;
+  var zone = document.getElementById('fzWtZone').value, kaam = document.getElementById('fzWtKaam').value;
+  if(!date || !zone){ toast('❗ Date aur Zone zaroori hai!','error'); return; }
+  if(!kaam){ toast('❗ Kaam ka type chuno (शावर / बेड / स्प्रे / ड्रिंचिंग)!','error'); return; }
+  var all = document.getElementById('fzWtAll').checked, lines = [];
+  if(!all){
+    var r = fzCollectLines('fzWtLines', false);
+    if(r.err){ toast('❗ '+r.err,'error'); return; }
+    if(!r.lines.length){ toast('❗ Paudha chuno — ya "Poore Zone me kiya" tick karo!','error'); return; }
+    lines = r.lines;
+  }
+  var dawai = [];
+  if(kaam==='स्प्रे' || kaam==='ड्रिंचिंग'){
+    document.querySelectorAll('#fzDwCon .fz-dw').forEach(function(el){
+      var n = el.dataset.n, nm = (document.getElementById('fzdn-'+n).value||'').trim();
+      if(nm) dawai.push({name:nm, dose:parseFloat(document.getElementById('fzdq-'+n).value)||0, unit:document.getElementById('fzdu-'+n).value});
+    });
+    if(!dawai.length){ toast('❗ '+kaam+' me kam se kam ek dawai bharo!','error'); return; }
+  }
+  if(!(FZL.wt||[]).length){ toast('❗ Kam se kam ek labour jodo!','error'); return; }
+  fzPost({module:'fzWater', date:date, supervisor:sup, zone:zone, kaam:kaam, allZone:all, lines:lines, dawai:dawai, labours:FZL.wt.slice(), remarks:document.getElementById('fzWtRem').value},
+    document.getElementById('fzWtBtn'), '✅ Faldar pani/spray save ho gaya!', fzResetWater, '✅ Entry Save Karo');
+}
+
+// ═══ 4. LOADING ═══
+function openFzLoad(){
+  fzSetSup(); fzToday('fzLdDate');
+  if(!document.getElementById('fzLdZone').options.length) fzFillZone('fzLdZone','Zone');
+  if(!document.querySelector('#fzLdLines .fz-pl')) fzAddPlantLine('fzLdLines', true);
+  if(!FZL.ld) fzMountPicker('fzLdLab','ld');
+  fzRenderTags('ld');
+  show('fzLoadScreen');
+}
+function fzResetLoad(){
+  ['fzLdParty','fzLdGaadi','fzLdDriver','fzLdRem'].forEach(function(id){ document.getElementById(id).value=''; });
+  document.getElementById('fzLdLines').innerHTML='';
+  fzAddPlantLine('fzLdLines', true); fzMountPicker('fzLdLab','ld'); fzRenderTags('ld');
+}
+function fzSubmitLoad(){
+  var date = document.getElementById('fzLdDate').value, sup = document.getElementById('fzLdSup').value;
+  var zone = document.getElementById('fzLdZone').value;
+  if(!date || !zone){ toast('❗ Date aur Zone zaroori hai!','error'); return; }
+  var r = fzCollectLines('fzLdLines', true);
+  if(r.err){ toast('❗ '+r.err,'error'); return; }
+  if(!r.lines.length){ toast('❗ Kam se kam ek paudha bharo!','error'); return; }
+  if(!(FZL.ld||[]).length){ toast('❗ Kam se kam ek labour jodo!','error'); return; }
+  fzPost({module:'fzLoad', date:date, supervisor:sup, zone:zone,
+    party:document.getElementById('fzLdParty').value.trim(), gaadi:document.getElementById('fzLdGaadi').value.trim(),
+    driver:document.getElementById('fzLdDriver').value.trim(), lines:r.lines, labours:FZL.ld.slice(),
+    remarks:document.getElementById('fzLdRem').value},
+    document.getElementById('fzLdBtn'), '✅ Faldar loading save ho gayi!', fzResetLoad, '🚚 Loading Save Karo');
+}
+
+// ═══ 5. REPORT ═══
+function openFzReport(){
+  var f = new Date(); f.setDate(f.getDate()-7);
+  document.getElementById('fzRFrom').value = localISO(f);
+  document.getElementById('fzRTo').value = localISO(new Date());
+  fzFillZone('fzRZone','Sab Zone');
+  document.getElementById('fzReportContent').innerHTML = '';
+  show('fzReportScreen');
+  fzLoadReport();
+}
+// koi bhi date format -> YYYY-MM-DD
+function fzISO(v){
+  if(v==null || v==='') return '';
+  var s = String(v).trim(), m;
+  if((m = s.match(/^Date\((\d+),(\d+),(\d+)/))) return m[1]+'-'+String(+m[2]+1).padStart(2,'0')+'-'+String(m[3]).padStart(2,'0');
+  if((m = s.match(/^(\d{4})-(\d{2})-(\d{2})/))) return m[1]+'-'+m[2]+'-'+m[3];
+  if((m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/))) return m[3]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[1]).padStart(2,'0');
+  return s;
+}
+// gviz text -> [{Date:'2026-..', Zone:..., ...}] (column order FZ_SHEETS[key].cols ke hisaab se)
+function fzParseSheet(txt, key){
+  var j; try{ j = JSON.parse(txt.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]); }catch(e){ return []; }
+  if(!j || j.status==='error' || !j.table) return [];
+  var cols = FZ_SHEETS[key].cols;
+  var lbl0 = (j.table.cols[0] && j.table.cols[0].label || '').trim();
+  var lblLast = (j.table.cols[cols.length-1] && j.table.cols[cols.length-1].label || '').trim();
+  if(lbl0 && (lbl0!=='Date' || (lblLast && lblLast!==cols[cols.length-1]))) return [];  // sheet abhi bani nahi / galat sheet
+  var out = [];
+  (j.table.rows||[]).forEach(function(r){
+    if(!r.c || !r.c[0] || r.c[0].v==null || r.c[0].v==='Date') return;
+    var o = {};
+    cols.forEach(function(c, i){ var cell = r.c[i]; o[c] = cell && cell.v!=null ? cell.v : ''; });
+    o.Date = fzISO(o.Date);
+    out.push(o);
+  });
+  return out;
+}
+function fzFetch(key){
+  return fetch('https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&headers=1&sheet='+encodeURIComponent(FZ_SHEETS[key].name)+'&t='+Date.now())
+    .then(function(r){ return r.text(); })
+    .then(function(t){ return fzParseSheet(t, key); })
+    .catch(function(){ return []; });
+}
+// data = {assign:[],shift:[],water:[],load:[]} -> filter kiya hua data
+function fzFilter(data, from, to, mod, zone, supOnly){
+  var res = {};
+  Object.keys(FZ_SHEETS).forEach(function(k){
+    res[k] = (mod && mod!==k) ? [] : (data[k]||[]).filter(function(r){
+      if(from && r.Date < from) return false;
+      if(to && r.Date > to) return false;
+      if(supOnly && String(r.Supervisor).trim()!==supOnly) return false;
+      if(zone){
+        var z = [r.Zone];
+        if(z.indexOf(zone)===-1) return false;
+      }
+      return true;
+    });
+  });
+  return res;
+}
+function fzLoadReport(){
+  var from = document.getElementById('fzRFrom').value, to = document.getElementById('fzRTo').value;
+  var mod = document.getElementById('fzRMod').value, zone = document.getElementById('fzRZone').value;
+  var con = document.getElementById('fzReportContent');
+  con.innerHTML = '<div class="card" style="text-align:center;padding:24px;color:var(--g5);">⏳ Load ho raha hai...</div>';
+  var keys = Object.keys(FZ_SHEETS);
+  Promise.all(keys.map(fzFetch)).then(function(arr){
+    var data = {}; keys.forEach(function(k,i){ data[k] = arr[i]; });
+    var supOnly = (curUser && curUser.role==='Supervisor') ? curUser.name : '';
+    con.innerHTML = fzRenderReport(fzFilter(data, from, to, mod, zone, supOnly));
+  });
+}
+function fzNum(v){ var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+function fzD(iso){ return (typeof formatDate==='function') ? formatDate(iso) : iso; }
+function fzCard(icon, title, sub, right, body, open){
+  return '<div class="crop-card" data-open="'+(open?'1':'0')+'">'+
+    '<div class="crop-head" onclick="togCrop(this)">'+
+      '<div style="font-size:20px;margin-right:10px;">'+icon+'</div>'+
+      '<div style="flex:1;min-width:0;"><div style="font-weight:800;color:#1a2e26;font-size:14px;">'+title+'</div>'+
+      '<div style="font-size:12px;color:#5a6a63;font-weight:600;">'+sub+'</div></div>'+
+      '<div style="font-weight:800;color:#9a5316;margin-right:8px;font-size:14px;">'+right+'</div>'+
+      '<i class="ti ti-chevron-down crop-chev"></i></div>'+
+    '<div class="crop-body"><div class="fz-tw">'+body+'</div></div></div>';
+}
+function fzRenderReport(d){
+  var A=d.assign, S=d.shift, W=d.water, L=d.load;
+  // Shifting me har labour ki alag row hai — entries ginne ke liye paudha-line ke hisaab se gino
+  var shLineKeys = {}; S.forEach(function(r){ shLineKeys[[r.Date, r.Zone, r.Plant, r['Purana Bag'], r['Naya Bag']].join('|')] = 1; });
+  var total = A.length+Object.keys(shLineKeys).length+W.length+L.length;
+  if(!total) return '<div class="card" style="text-align:center;padding:24px;color:var(--g5);">📭 Is date / filter me koi entry nahi mili</div>';
+  var sort = function(a,b){ return a.Date<b.Date?1:(a.Date>b.Date?-1:0); };
+  [A,S,W,L].forEach(function(x){ x.sort(sort); });
+  var labDays = 0; A.forEach(function(r){ labDays += fzNum(r['Total Labour']); });
+  var shQty = 0; S.forEach(function(r){ shQty += fzNum(r.Qty); });
+  var ldQty = 0; L.forEach(function(r){ ldQty += fzNum(r.Qty); });
+  var h = '<div class="sumcard" style="margin:0 0 12px;background:linear-gradient(135deg,#7a3f0c,#3f2006);">'+
+    '<div class="sumtitle" style="color:#f7d3a8;">🌳 Faldar Summary</div><div class="sg4">'+
+    '<div class="si"><span class="val" style="color:#f7d3a8;">'+total+'</span><div class="lbl">Entries</div></div>'+
+    '<div class="si"><span class="val" style="color:#f7d3a8;">'+labDays+'</span><div class="lbl">Labour (Assign)</div></div>'+
+    '<div class="si"><span class="val" style="color:#f7d3a8;">'+shQty.toLocaleString('en-IN')+'</span><div class="lbl">Shift Bag</div></div>'+
+    '<div class="si"><span class="val" style="color:#f7d3a8;">'+ldQty.toLocaleString('en-IN')+'</span><div class="lbl">Load Paudhe</div></div>'+
+    '</div></div>';
+  var lab = function(r){ return '<div class="fz-lab">'+fzEsc(r['Labour Names'])+' ('+fzNum(r['Total Labour'])+')</div>'; };
+  var plant = function(r){ return fzEsc(r.Plant)+(r.Category?' <span class="fz-lab">· '+fzEsc(r.Category)+'</span>':'')+(r.Size?' <span class="fz-lab">· '+fzEsc(r.Size)+'</span>':''); };
+
+  if(A.length){
+    // Kaam-wise labour total
+    var byK = {}; A.forEach(function(r){ byK[r.Kaam] = (byK[r.Kaam]||0) + fzNum(r['Total Labour']); });
+    var t = '<table class="fz-tbl"><thead><tr><th>Date</th><th>Zone</th><th>Kaam</th><th>Labour</th></tr></thead><tbody>'+
+      A.map(function(r){ return '<tr><td>'+fzD(r.Date)+'</td><td>'+fzEsc(r.Zone)+'</td><td>'+fzEsc(r.Kaam)+'</td><td>'+lab(r)+'</td></tr>'; }).join('')+
+      '</tbody></table>'+
+      '<table class="fz-tbl" style="margin-top:6px;"><thead><tr><th>Kaam</th><th style="text-align:right;">Kul Labour</th></tr></thead><tbody>'+
+      Object.keys(byK).sort(function(a,b){ return byK[b]-byK[a]; }).map(function(k){ return '<tr><td>'+fzEsc(k)+'</td><td style="text-align:right;font-weight:700;">'+byK[k]+'</td></tr>'; }).join('')+
+      '<tr class="fz-tot"><td>TOTAL</td><td style="text-align:right;">'+labDays+'</td></tr></tbody></table>';
+    h += fzCard('📋','Morning Assignment', A.length+' entries', labDays+' labour', t, false);
+  }
+  if(S.length){
+    // Ek hi date + zone + paudha + bag wali lines ko ek row me jodo, labour ke bag saath me
+    var sg = {}, so = [];
+    S.forEach(function(r){
+      var k = [r.Date, r.Zone, r.Plant, r['Purana Bag'], r['Naya Bag']].join('|');
+      if(!sg[k]){ sg[k] = {r:r, labs:[], q:0}; so.push(k); }
+      sg[k].labs.push(fzEsc(r['Labour Name'])+' '+fzNum(r.Qty)); sg[k].q += fzNum(r.Qty);
+    });
+    var t2 = '<table class="fz-tbl"><thead><tr><th>Date</th><th>Zone</th><th>Paudha</th><th>Bag</th><th style="text-align:right;">Kul Bag</th><th>Labour</th></tr></thead><tbody>'+
+      so.map(function(k){ var g=sg[k], r=g.r;
+        return '<tr><td>'+fzD(r.Date)+'</td><td>'+fzEsc(r.Zone)+'</td><td>'+plant(r)+'</td><td style="white-space:nowrap;">'+fzEsc(r['Purana Bag'])+' → '+fzEsc(r['Naya Bag'])+'</td><td style="text-align:right;font-weight:700;">'+g.q.toLocaleString('en-IN')+'</td><td class="fz-lab">'+g.labs.join(', ')+'</td></tr>'; }).join('')+
+      '<tr class="fz-tot"><td colspan="4">TOTAL</td><td style="text-align:right;">'+shQty.toLocaleString('en-IN')+'</td><td></td></tr></tbody></table>';
+    h += fzCard('🔄','Shifting (Bag Badla)', so.length+' lines', shQty.toLocaleString('en-IN')+' bag', t2, false);
+  }
+  if(W.length){
+    var t3 = '<table class="fz-tbl"><thead><tr><th>Date</th><th>Zone</th><th>Kaam</th><th>Paudha</th><th>Dawai</th><th>Labour</th></tr></thead><tbody>'+
+      W.map(function(r){ return '<tr><td>'+fzD(r.Date)+'</td><td>'+fzEsc(r.Zone)+'</td><td>'+fzEsc(r.Kaam)+'</td><td>'+plant(r)+'</td><td>'+(fzEsc(r.Dawai)||'—')+'</td><td>'+lab(r)+'</td></tr>'; }).join('')+
+      '</tbody></table>';
+    h += fzCard('💧','Pani / Spray', W.length+' entries', '', t3, false);
+  }
+  if(L.length){
+    var t4 = '<table class="fz-tbl"><thead><tr><th>Date</th><th>Zone</th><th>Party / Gaadi</th><th>Paudha</th><th style="text-align:right;">Qty</th><th>Labour</th></tr></thead><tbody>'+
+      L.map(function(r){ return '<tr><td>'+fzD(r.Date)+'</td><td>'+fzEsc(r.Zone)+'</td><td>'+(fzEsc(r.Party)||'—')+'<div class="fz-lab">'+fzEsc(r['Gaadi No'])+(r.Driver?' · '+fzEsc(r.Driver):'')+'</div></td><td>'+plant(r)+'</td><td style="text-align:right;font-weight:700;">'+fzNum(r.Qty).toLocaleString('en-IN')+'</td><td>'+lab(r)+'</td></tr>'; }).join('')+
+      '<tr class="fz-tot"><td colspan="4">TOTAL</td><td style="text-align:right;">'+ldQty.toLocaleString('en-IN')+'</td><td></td></tr></tbody></table>';
+    h += fzCard('🚚','Loading', L.length+' lines', ldQty.toLocaleString('en-IN')+' paudhe', t4, false);
+  }
+  // Paudha-wise: kitne shift, kitne load
+  var pw = {};
+  S.forEach(function(r){ var k=r.Plant; if(!pw[k]) pw[k]={cat:r.Category,sh:0,ld:0}; pw[k].sh += fzNum(r.Qty); });
+  L.forEach(function(r){ var k=r.Plant; if(!pw[k]) pw[k]={cat:r.Category,sh:0,ld:0}; pw[k].ld += fzNum(r.Qty); });
+  var pk = Object.keys(pw);
+  if(pk.length){
+    var t5 = '<table class="fz-tbl"><thead><tr><th>Paudha</th><th>Category</th><th style="text-align:right;">Shift (Bag)</th><th style="text-align:right;">Load</th></tr></thead><tbody>'+
+      pk.sort(function(a,b){ return (pw[b].sh+pw[b].ld)-(pw[a].sh+pw[a].ld); }).map(function(k){
+        return '<tr><td style="font-weight:700;">'+fzEsc(k)+'</td><td>'+fzEsc(pw[k].cat)+'</td><td style="text-align:right;">'+pw[k].sh.toLocaleString('en-IN')+'</td><td style="text-align:right;">'+pw[k].ld.toLocaleString('en-IN')+'</td></tr>';
+      }).join('')+
+      '<tr class="fz-tot"><td colspan="2">TOTAL</td><td style="text-align:right;">'+shQty.toLocaleString('en-IN')+'</td><td style="text-align:right;">'+ldQty.toLocaleString('en-IN')+'</td></tr></tbody></table>';
+    h += fzCard('🌳','Paudha-wise Summary', pk.length+' paudhe', '', t5, false);
+  }
+  // Labour-wise: kis labour ne kitni baar kya kaam kiya
+  var lw = {};
+  var addL = function(names, what, bags){ String(names||'').split(',').forEach(function(n){ n=n.trim(); if(!n) return; if(!lw[n]) lw[n]={c:0,k:{},b:0}; lw[n].c++; lw[n].k[what]=1; lw[n].b += (bags||0); }); };
+  A.forEach(function(r){ addL(r['Labour Names'], r.Kaam); });
+  S.forEach(function(r){ addL(r['Labour Name'], 'शिफ्टिंग', fzNum(r.Qty)); });
+  W.forEach(function(r){ addL(r['Labour Names'], r.Kaam); });
+  L.forEach(function(r){ addL(r['Labour Names'], 'लोडिंग'); });
+  var lk = Object.keys(lw);
+  if(lk.length){
+    var t6 = '<table class="fz-tbl"><thead><tr><th>Labour</th><th style="text-align:right;">Entries</th><th style="text-align:right;">Shift Bag</th><th>Kaam</th></tr></thead><tbody>'+
+      lk.sort(function(a,b){ return lw[b].c-lw[a].c; }).map(function(n){
+        return '<tr><td style="font-weight:700;">'+fzEsc(n)+'</td><td style="text-align:right;">'+lw[n].c+'</td><td style="text-align:right;font-weight:700;">'+(lw[n].b?lw[n].b.toLocaleString('en-IN'):'—')+'</td><td class="fz-lab">'+Object.keys(lw[n].k).map(fzEsc).join(', ')+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    h += fzCard('👷','Labour-wise Summary', lk.length+' labour', '', t6, false);
+  }
+  return h;
+}
+// App khulte hi plant list le aao
+window.addEventListener('load', function(){ setTimeout(fzLoadPlants, 1500); });
 
 </script>
 
