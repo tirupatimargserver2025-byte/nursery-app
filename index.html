@@ -232,6 +232,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 .tag.p{background:#e8f5e9;color:#2e7d32;}.tag.a{background:var(--rl);color:var(--rd);}
 .tag.sup{background:var(--gp);color:var(--gm);}.tag.mgr{background:var(--bp);color:var(--bm);}
 .tag.adm{background:#fff8e1;color:#f57f17;}
+.tag.fz{background:#fdecd8;color:#9a5316;}.tag.veg{background:#e8f5ee;color:#2d7a4f;}
 
 /* ADMIN */
 .admin-row{display:flex;align-items:center;justify-content:space-between;
@@ -539,6 +540,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
 
     <!-- Supervisor Menu -->
     <div id="supMenu">
+    <div id="supVegPart">
       <div style="font-size:11.5px;font-weight:800;color:#3d7a5a;text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px;padding-left:6px;display:flex;align-items:center;gap:7px;"><i class="ti ti-chart-bar" style="font-size:16px;color:#2d7a4f;"></i>Meri Dashboard</div><div class="mgrid">
         <div class="mcard report" onclick="openDashboard()" style="grid-column:1/-1;background:linear-gradient(135deg,var(--gd),var(--gm));color:white;">
           <div class="ico"><i class="ti ti-chart-bar"></i></div><div class="ttl" style="color:white;">Meri Sari Report</div>
@@ -582,13 +584,16 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
         <div class="mcard entry" onclick="openShiftingForm()"><div class="ico"><i class="ti ti-refresh"></i></div><div class="ttl">Shifting</div><div class="dsc">Labour shifting records</div></div>
         <div class="mcard entry" onclick="openDispatchForm()"><div class="ico"><i class="ti ti-truck"></i></div><div class="ttl">Dispatch</div><div class="dsc">Vehicle dispatch</div></div>
       </div></div></div>
-      <div class="msec-acc" data-open="0"><div class="msec-head" onclick="togSec(this)"><div class="mh-left"><i class="ti ti-trees"></i>Faldar / Forestry / Phool</div><div class="mh-right"><span class="msec-count">5</span><i class="ti ti-chevron-down msec-chev"></i></div></div><div class="msec-body"><div class="mgrid">
+    </div><!-- /supVegPart -->
+    <div id="supFzPart">
+      <div class="msec-acc" data-open="1"><div class="msec-head" onclick="togSec(this)"><div class="mh-left"><i class="ti ti-trees"></i>Faldar / Forestry / Phool</div><div class="mh-right"><span class="msec-count">5</span><i class="ti ti-chevron-down msec-chev"></i></div></div><div class="msec-body"><div class="mgrid">
         <div class="mcard fz" onclick="openFzAssign()"><div class="ico"><i class="ti ti-clipboard-check"></i></div><div class="ttl">Faldar Assignment</div><div class="dsc">Zone + kaam + labour</div></div>
         <div class="mcard fz" onclick="openFzShift()"><div class="ico"><i class="ti ti-arrows-exchange"></i></div><div class="ttl">Faldar Shifting</div><div class="dsc">Chhote bag se bade bag me</div></div>
         <div class="mcard fz" onclick="openFzWater()"><div class="ico"><i class="ti ti-droplet-half"></i></div><div class="ttl">Pani / Spray</div><div class="dsc">Shower, bed, spray, drench</div></div>
         <div class="mcard fz" onclick="openFzLoad()"><div class="ico"><i class="ti ti-truck-loading"></i></div><div class="ttl">Faldar Loading</div><div class="dsc">Gaadi me paudhe</div></div>
         <div class="mcard fz" onclick="openFzReport()" style="grid-column:1/-1;"><div class="ico"><i class="ti ti-report-analytics"></i></div><div class="ttl">Faldar Report</div><div class="dsc">Zone, kaam, paudha, labour — sab ek jagah</div></div>
       </div></div></div>
+    </div><!-- /supFzPart -->
     </div>
 
     <!-- Manager Menu -->
@@ -1058,6 +1063,10 @@ input:focus,select:focus,textarea:focus{border-color:var(--gl);background:white;
             <option>Supervisor</option><option>Manager</option><option>Admin</option>
           </select></div>
       </div>
+      <div class="fr"><label>🏷️ Vibhag (sirf Supervisor ke liye)</label>
+        <select id="newUserVibhag"><option>Vegetable</option><option>Faldar</option></select></div>
+      <div style="font-size:11.5px;color:var(--g5);background:#fffaf3;border:1px dashed #f3cf9f;border-radius:8px;padding:8px 10px;margin-bottom:10px;">
+        Supervisors sheet me: A=Naam, B=PIN, C=Status, D=Role, <b>E=Vibhag</b> (Vegetable / Faldar). E khaali = Vegetable.</div>
       <button onclick="addUser()" style="width:100%;padding:10px;background:#f9a825;color:white;border:none;border-radius:var(--rs);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;">➕ User Add Karo</button>
     </div>
   </div>
@@ -1960,7 +1969,7 @@ function formatDate(dateStr) {
 }
 // ═══ AUTO-UPDATE: naya version aate hi app khud refresh ho jayega ═══
 // Deploy karte waqt ye number badal jata hai -> purana app khud naya version le lega
-const APP_VERSION = '20260927-2200b';
+const APP_VERSION = '20260928-1000b';
 (function autoUpdateCheck(){
   // Loop guard: abhi abhi update hua hai to dobara check mat karo
   if(location.search.indexOf('v=') !== -1) return;
@@ -2048,7 +2057,8 @@ function loadAll() {
           const st=row.c[2]?row.c[2].v.toString().trim().toLowerCase():'active';
           const role=row.c[3]?row.c[3].v.toString().trim():'Supervisor';
           if(nm && st==='active'){
-            SUP_DATA[nm]={pin,role};
+            const vib=row.c[4]&&row.c[4].v?row.c[4].v.toString().trim():'';
+            SUP_DATA[nm]={pin,role,vibhag:fzVibhag(vib)};
             names.push(nm);
           }
         });
@@ -2119,7 +2129,7 @@ function doLogin() {
             if(nm==='Supervisor Naam'||nm==='Naam') return;
             const p=row.c[1]?row.c[1].v.toString().trim():'';
             const role=row.c[3]?row.c[3].v.toString().trim():'Supervisor';
-            if(nm===name && p===pin){found=true;loginOk(name,role);}
+            if(nm===name && p===pin){found=true;SUP_DATA[nm]={pin:p,role,vibhag:fzVibhag(row.c[4]&&row.c[4].v?row.c[4].v:'')};loginOk(name,role);}
           });
           if(!found) showErr('❌ Galat naam ya PIN!');
         } catch(e){showErr('⚠️ Error! Dobara try karo.');}
@@ -2152,6 +2162,10 @@ function loginOk(name, role) {
     document.getElementById('roleIco').textContent='📣';
     document.getElementById('roleTitle').textContent='Marketing — '+name;
     document.getElementById('roleDesc').textContent='Booking aur reports';
+  } else if(fzIsFaldar(name)){
+    document.getElementById('roleIco').textContent='🌳';
+    document.getElementById('roleTitle').textContent='Faldar Supervisor — '+name;
+    document.getElementById('roleDesc').textContent='Faldar / Forestry / Phool ka kaam';
   } else {
     document.getElementById('roleIco').textContent='👷';
     document.getElementById('roleTitle').textContent='Supervisor — '+name;
@@ -2163,9 +2177,13 @@ function loginOk(name, role) {
   document.getElementById('mgrMenu').style.display  = (role==='Manager'?'block':'none');
   document.getElementById('adminMenu').style.display= (role==='Admin'?'block':'none');
   document.getElementById('marketingMenu').style.display= (role==='Marketing'?'block':'none');
+  // Supervisor: Vegetable wale ko sabji ke tab, Faldar wale ko sirf Faldar ke tab
+  const isFz = (role==='Supervisor' && fzIsFaldar(name));
+  document.getElementById('supVegPart').style.display = isFz ? 'none' : 'block';
+  document.getElementById('supFzPart').style.display  = isFz ? 'block' : 'none';
 
   // Fill supervisor dropdowns
-  const supNames = Object.keys(SUP_DATA).filter(n=>SUP_DATA[n] && SUP_DATA[n].role==='Supervisor');
+  const supNames = Object.keys(SUP_DATA).filter(n=>SUP_DATA[n] && SUP_DATA[n].role==='Supervisor' && !fzIsFaldar(n));
   ['asSup','attSup','sSup','wSup'].forEach(id=>{
     const sel=document.getElementById(id); if(!sel) return;
     sel.innerHTML='<option value="">-- Select --</option>';
@@ -3411,7 +3429,8 @@ function loadUserList(){
   Object.entries(SUP_DATA).forEach(([name,data])=>{
     const d=document.createElement('div'); d.className='admin-row';
     d.innerHTML='<div class="admin-info"><div class="an">'+name+'</div>'+
-      '<div class="ar">PIN: '+data.pin+' <span class="tag '+(data.role==='Admin'?'adm':data.role==='Manager'?'mgr':'sup')+'">'+data.role+'</span></div></div>'+
+      '<div class="ar">PIN: '+data.pin+' <span class="tag '+(data.role==='Admin'?'adm':data.role==='Manager'?'mgr':'sup')+'">'+data.role+'</span>'+
+      (data.role==='Supervisor' ? ' <span class="tag '+(data.vibhag==='Faldar'?'fz':'veg')+'">'+(data.vibhag==='Faldar'?'🌳 Faldar':'🥬 Vegetable')+'</span>' : '')+'</div></div>'+
       '<button class="toggle-btn '+(data.status==='inactive'?'inactive':'active')+'" onclick="toast(\'Sheet mein jaake status badlo!\',\'error\')">'+
       (data.status==='inactive'?'Active Karo':'Band Karo')+'</button>';
     con.appendChild(d);
@@ -3422,8 +3441,9 @@ function addUser(){
   const name=document.getElementById('newUserName').value.trim();
   const pin=document.getElementById('newUserPin').value.trim();
   const role=document.getElementById('newUserRole').value;
+  const vib=role==='Supervisor'?document.getElementById('newUserVibhag').value:'';
   if(!name||!pin){toast('❗ Naam aur PIN zaroori hai!','error');return;}
-  toast('✅ User info note karo — Sheet mein manually add karo:\nNaam: '+name+' | PIN: '+pin+' | Role: '+role,'success');
+  toast('✅ Sheet me add karo: '+name+' | '+pin+' | Active | '+role+(vib?' | '+vib:''),'success');
 }
 
 // ════ SUCCESS ════
@@ -6131,6 +6151,9 @@ function loadDispatchReport(){
 // FALDAR / FORESTRY / PHOOL / ORNAMENTAL MODULE (sirf Bafalgaon)
 // Sabji wale module se bilkul alag — alag zone, alag kaam, alag sheets
 // ════════════════════════════════════════════════════════════════
+// Supervisors sheet column E = Vibhag (Vegetable / Faldar). Khaali = Vegetable
+function fzVibhag(v){ v=(v==null?'':String(v)).trim().toLowerCase(); return (v.indexOf('faldar')>-1 || v.indexOf('फलदार')>-1 || v.indexOf('forest')>-1) ? 'Faldar' : 'Vegetable'; }
+function fzIsFaldar(name){ return !!(SUP_DATA[name] && SUP_DATA[name].vibhag==='Faldar'); }
 const FZ_ZONES = ['कटिंग झोन','देवेन्द्र भैया वाला खेत','सिन्धु नेट हाउस','तालाब नेट हाउस','पुरानी ऑफिस के पास','मदर के पास'];
 const FZ_WORK = ['कटिंग लगाने पर','लोडिंग कार्य','शिफ्टिंग कार्य','आर्डर निकलने पर','चाला पल्टी पर','पौधा जमाने पर','निंदाई पर','स्प्रे पर','ड्रिंचिंग पर','कटिंग करने पर','सीड सोइंग पर','चंदन में होस्ट लगाने पर','चंदन में होस्ट काटने पर','पाइपलाइन रिपेयरिंग कार्य','ग्राफ्टिंग करने पर','साफ-सफाई + कचरा फेंकने पर','बेट में पत्ती जमाने पर','शावर से पानी पर','बेड से पानी पर','अन्य कार्य पर'];
 const FZ_CATS = ['फलदार','फॉरेस्ट्री','फूल वाले','ऑर्नामेंटल','अन्य'];
