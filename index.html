@@ -2317,7 +2317,7 @@ function formatDate(dateStr) {
 }
 // ═══ AUTO-UPDATE: naya version aate hi app khud refresh ho jayega ═══
 // Deploy karte waqt ye number badal jata hai -> purana app khud naya version le lega
-const APP_VERSION = '20261026-1645b';
+const APP_VERSION = '20261109-1630b';
 (function autoUpdateCheck(){
   // Loop guard: abhi abhi update hua hai to dobara check mat karo
   if(location.search.indexOf('v=') !== -1) return;
@@ -2336,6 +2336,77 @@ const APP_VERSION = '20261026-1645b';
 })();
 
 const API = 'https://script.google.com/macros/s/AKfycbxbe3QLBtIrcl0CXJMkM3zI7m5Pd75vsMaMO4rNRyMqQ0Ux5c_-TE5v6Dk8p2DqEPCVkQ/exec';
+
+// ════════ SAVE SURAKSHA (dohri entry nahi, atka button nahi) ════════
+// Har entry ke saath ek token jaata hai. Server (Apps Script) ek token ko ek hi baar likhta hai.
+// 40 second me jawab na aaye to app server se poochta hai "yeh entry pahunchi?" — haan to ✅ success;
+// ~2 minute tak pata na chale to button wapas chalu, "Dobara Save" dabao (wahi token, dohri nahi banegi).
+const SAFE = { slowMs: 40000, pollMs: 5000, pollMax: 24, pend: {}, lastBtn: null };
+document.addEventListener('click', function(e){
+  const b = e.target && e.target.closest ? e.target.closest('button') : null;
+  if(b){ SAFE.lastBtn = b; if(!/Dobara Save|Save Ho Raha/.test(b.textContent)) b.setAttribute('data-safe-label', b.innerHTML); }
+}, true);
+(function(){
+  const nativeFetch = window.fetch.bind(window);
+  // Bilkul wahi entry (booking ID chhod kar) dobara aaye to wahi token — warna naya
+  function safeKey(d){
+    const c = {}; Object.keys(d).sort().forEach(function(k){ if(k !== '_tok' && k !== 'bookingId') c[k] = d[k]; });
+    if(d.bookingId && d.module !== 'booking') c.bookingId = d.bookingId;
+    return JSON.stringify(c);
+  }
+  function safeStuck(b){ return b && document.body.contains(b) && b.disabled && /Save Ho Raha|Dobara Save/.test(b.textContent); }
+  function safeRetryReady(p){
+    const b = p.btn;
+    if(safeStuck(b)){
+      try{ isSaving = false; }catch(e){}
+      b.disabled = false; b.innerHTML = '🔁 Dobara Save Karo';
+      toast('⚠️ Server ne jawab nahi diya. "Dobara Save Karo" dabao — dohri entry nahi banegi.', 'error');
+    } else {
+      toast('⚠️ Pichhli entry ka server se jawab nahi aaya — report me check kar lo.', 'error');
+    }
+  }
+  // Save ho gaya: button "Save Ho Raha Hai" par atka ho to wapas pehle jaisa
+  function safeRestore(p){
+    setTimeout(function(){
+      const b = p.btn;
+      if(safeStuck(b)){ b.disabled = false; b.innerHTML = b.getAttribute('data-safe-label') || '💾 Save'; }
+    }, 300);
+  }
+  window.fetch = function(url, opts){
+    if(url !== API || !opts || String(opts.method||'').toUpperCase() !== 'POST' || typeof opts.body !== 'string') return nativeFetch(url, opts);
+    let data; try{ data = JSON.parse(opts.body); }catch(e){ return nativeFetch(url, opts); }
+    if(!data || typeof data !== 'object' || data.module === 'pullCalls') return nativeFetch(url, opts);
+    const key = safeKey(data);
+    let p = SAFE.pend[key];
+    if(!p || p.done) p = SAFE.pend[key] = { tok: Date.now().toString(36) + Math.random().toString(36).slice(2, 9), done: false };
+    p.btn = SAFE.lastBtn;                       // dobara dabaya to wahi token, naya button
+    data._tok = p.tok;
+    const o2 = Object.assign({}, opts, { body: JSON.stringify(data) });
+    return new Promise(function(resolve, reject){
+      let settled = false, polls = 0, pollT = null;
+      function finish(ok, val){
+        if(settled) return; settled = true; clearTimeout(slowT); if(pollT) clearInterval(pollT);
+        if(p.done) return;                        // dusri koshish pehle hi poori — yeh chup rahe
+        if(ok){ p.done = true; if(SAFE.pend[key] === p) delete SAFE.pend[key]; resolve(val); safeRestore(p); }
+        else reject(val);
+      }
+      nativeFetch(url, o2).then(function(r){ finish(true, r); }, function(err){ finish(false, err); });
+      const slowT = setTimeout(function(){
+        if(settled || p.done) return;
+        toast('⏳ Server dheema hai — check kar rahe hain entry pahunchi ya nahi…', 'warning');
+        pollT = setInterval(function(){
+          if(settled || p.done){ clearInterval(pollT); return; }
+          polls++;
+          nativeFetch(API + '?tok=' + encodeURIComponent(p.tok) + '&t=' + Date.now())
+            .then(function(r){ return r.json(); })
+            .then(function(j){ if(j && j.done) finish(true, { ok: true, viaCheck: true }); })
+            .catch(function(){});
+          if(polls >= SAFE.pollMax){ clearInterval(pollT); pollT = null; if(!settled && !p.done) safeRetryReady(p); }
+        }, SAFE.pollMs);
+      }, SAFE.slowMs);
+    });
+  };
+})();
 const SHEET_ID = '1Nv8FzgMKno4idg7y8OtiQ5QV0OhlsHNTfk9gn4rBVwM';
 
 let SUP_DATA = {}; // {name: {pin, role}}
